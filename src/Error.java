@@ -33,7 +33,7 @@ public abstract class Error {
 		this.error_rate = error_rate;
 	}
 
-	public ArrayList<Sign> getSigns() {
+	public ArrayList<Sign> sign() {
 		return signs;
 	}
 
@@ -51,6 +51,10 @@ public abstract class Error {
 		this.error_size = (int) (corpus_size * this.error_rate);
 	}
 	
+	public ArrayList<Sign> getSigns() {
+		return signs;
+	}
+
 	public String toString(){
 		String str = "Error: "+name+"\n ";
 		for (Sign sign : signs) {
@@ -59,9 +63,10 @@ public abstract class Error {
 		}
 		return str;
 	}
+	
 	/**
 	 * 
 	 * @return perform success or not
 	 */
-	public abstract boolean process();
+	public abstract boolean process(ArrayList<StringBuffer> corpus_bf,ArrayList<Error> errors);
  }

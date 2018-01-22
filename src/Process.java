@@ -126,7 +126,7 @@ public class Process {
 		if(sim_found_table == null){
 			//构建一个hashmap作为查找表，K：字，V：存储的数组的索引
 			sim_found_table = new HashMap<String, String>();
-			//存储表，用来保存每一个形似词
+			//存储表，用来保存每一个形似词，一行对应一组形似词组
 			sim_store_table = new ArrayList<ArrayList<String>>();
 			
 			BufferedReader fin = null;
