@@ -1,2 +1,2 @@
 # ErrorCorpus
-Create a corpus with different errrors 
+Create a corpus with different errors 
