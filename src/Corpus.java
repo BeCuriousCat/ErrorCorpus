@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSON;
+
 public class Corpus {
 
 	private String relativelyPath = System.getProperty("user.dir");
@@ -64,6 +66,8 @@ public class Corpus {
 					bfs.add(bf);
 				}
 			}
+//			TODO
+			System.out.println(bfs.get(0));
 		} catch (Exception e) {
 			System.out.println("读取文件出错！");
 			e.printStackTrace();
@@ -129,7 +133,7 @@ public class Corpus {
 	 * @return
 	 */
 	public String getErrorsNumber() {
-		String str = "Corpus total errors rate: "+error_rate+"errors number: "+errs_number+"\n";
+		String str = "Corpus total errors rate: "+error_rate+" errors number: "+errs_number+"\n";
 		for (Error error : errors) {
 			str += "error type:"+error.getName()+" rate:"+error.getError_rate()+" number:"+error.getError_size();
 		}
@@ -151,6 +155,10 @@ public class Corpus {
 		FileWriter fw = null;
 		FileWriter conf_fw = null;
 		BufferedWriter bw = null;
+		
+		//TODO
+		System.out.println(filepath);
+		
 		try {
 			if (!file.exists()) {
 				file.createNewFile();
@@ -175,10 +183,8 @@ public class Corpus {
 				// 语料库大小
 				content += "corpus_size:" + this.corpus_size;
 				content += enter;
-				// 错误率和错误个数
-				content += "error_rate:" + this.error_rate + "   error_number:"
-						+ this.errs_number;
-				content += enter;
+				// 获得错误类型及数量
+				content += getErrorsNumber();
 				// 生成时间
 				String temp_str = "";
 				Date dt = new Date();
@@ -188,11 +194,11 @@ public class Corpus {
 				content += "risen time:" + temp_str;
 				content += enter;
 
-				// 获得错误类型及数量
-				content += getErrorsNumber();
-
+				String json = JSON.toJSONString(errors);
+				
 				// 输出
 				conf_fw.write(content, 0, content.length());
+				conf_fw.write(json, 0, json.length());
 				conf_fw.flush();
 
 			}
@@ -200,13 +206,19 @@ public class Corpus {
 			System.out.println("Error: write file error!");
 			e.printStackTrace();
 		} finally {
-			bw.close();
-			fw.close();
-			conf_fw.close();
+				bw.close();
+				fw.close();
+				conf_fw.close();
 		}
 
 	}
-
+	
+	public void run(){
+		for (Error error : errors) {
+			error.process(text, errors);
+		}
+	}
+	
 	public static void main(String[] args) {
 		StringBuffer str = new StringBuffer("12345");
 		StringBuffer s = str.replace(1, 2, "|");

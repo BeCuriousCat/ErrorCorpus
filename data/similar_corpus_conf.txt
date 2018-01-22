@@ -1,0 +1,4 @@
+corpus_size:20000
+Corpus total errors rate: 0.0errors number: 0
+risen time:2018-01-22 22:03:53 обнГ
+[]
