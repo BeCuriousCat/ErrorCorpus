@@ -1,4 +1,4 @@
 corpus_size:20000
-Corpus total errors rate: 0.0errors number: 0
-risen time:2018-01-22 22:03:53 下午
-[]
+Corpus total errors rate: 0.01% errors number: 2
+error type:SimiliarError rate:1.0E-4 number:2risen time:2018-01-22 23:03:33 下午
+[{"error_rate":1.0E-4,"error_size":2,"name":"SimiliarError","signs":[{"correct_word":"挤","index":7917,"paragraph":0,"wrong_word":"济"},{"correct_word":"亦","index":14505,"paragraph":0,"wrong_word":"变"}]}]

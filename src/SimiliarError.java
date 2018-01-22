@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class SimiliarError extends Error {
 	// 形近词表
 	private static String sim_corpus_path = System.getProperty("user.dir")
-			+ "corpusLib\\形近字表.txt";
+			+ "\\corpusLib\\形近字表.txt";
 	// 因为需要多次迭代形近词表，所以将其长期放入内存中
 	// 构建一个hashmap作为查找表，K：字，V：存储的数组的索引
 	private static HashMap<String, String> sim_found_table = null;
@@ -18,11 +18,14 @@ public class SimiliarError extends Error {
 
 	public SimiliarError(String name, double rate) {
 		super(name, rate);
+		ArrayList<Sign> sign = new ArrayList<Sign>();
+		setSigns(sign);
 	}
 
 	@Override
 	public boolean process(ArrayList<StringBuffer> corpus_bfs,ArrayList<Error> errors) {
 		// 若不存在，则初始化形近词库
+		System.out.println("run the process function");
 		try {
 			initSimiliarlCorpus();
 		} catch (IOException e) {
@@ -41,8 +44,9 @@ public class SimiliarError extends Error {
 			paragraph_index = getRondParagraphIndex(corpus_bfs);
 			index = getRondIndex(corpus_bfs, paragraph_index);
 			
-			StringBuffer paragraph = corpus_bfs.get(paragraph_index);
+			StringBuffer paragraph = null;
 			while (true) {
+				paragraph = corpus_bfs.get(paragraph_index);
 				boolean repeat = false;
 				charAtText = paragraph.charAt(index);
 				// 必须转化为string才能找到
@@ -148,7 +152,6 @@ public class SimiliarError extends Error {
 			sim_found_table = new HashMap<String, String>();
 			// 存储表，用来保存每一个形似词，一行对应一组形似词组
 			sim_store_table = new ArrayList<ArrayList<String>>();
-
 			BufferedReader fin = null;
 			try {
 				File file = new File(sim_corpus_path);
@@ -175,13 +178,14 @@ public class SimiliarError extends Error {
 						sim_store_table.add(similar);
 					index += 1;
 				}
-				// System.out.println(sim_store_table.size());
+				System.out.println(sim_store_table.size());
 				System.out.println("similar corpus completed!");
 			} catch (Exception e) {
 				System.out.println("Error: init similiar words corpus error!");
 				e.printStackTrace();
 			} finally {
-				fin.close();
+				if(fin != null)
+					fin.close();
 			}
 		}
 	}

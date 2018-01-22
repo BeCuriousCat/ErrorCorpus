@@ -66,8 +66,6 @@ public class Corpus {
 					bfs.add(bf);
 				}
 			}
-//			TODO
-			System.out.println(bfs.get(0));
 		} catch (Exception e) {
 			System.out.println("读取文件出错！");
 			e.printStackTrace();
@@ -101,7 +99,7 @@ public class Corpus {
 		// 在错误传入后，根据错误比例设置好错误数量
 		for (Error err : errors) {
 			err.setError_size((int) Math.ceil(corpus_size * err.getError_rate()));
-			;
+			this.error_rate += err.getError_rate();
 		}
 		this.errors = errors;
 		try {
@@ -121,6 +119,7 @@ public class Corpus {
 		try {
 			for (Error error : errors) {
 				this.errs_number += error.getError_size();
+				this.error_rate += error.getError_rate();
 			}
 		} catch (Exception e) {
 			System.out.println("init corpus wraning: errors is null");
@@ -133,9 +132,12 @@ public class Corpus {
 	 * @return
 	 */
 	public String getErrorsNumber() {
-		String str = "Corpus total errors rate: "+error_rate+" errors number: "+errs_number+"\n";
+		String str = "Corpus total errors rate: " + error_rate * 100
+				+ "% errors number: " + errs_number + "\n";
 		for (Error error : errors) {
-			str += "error type:"+error.getName()+" rate:"+error.getError_rate()+" number:"+error.getError_size();
+			str += "error type:" + error.getName() + " rate:"
+					+ error.getError_rate() + " number:"
+					+ error.getError_size();
 		}
 		return str;
 	}
@@ -146,8 +148,8 @@ public class Corpus {
 	 * @throws IOException
 	 */
 	public void write(String filename) throws IOException {
-		//TODO
-		String path = relativelyPath+"\\data\\";
+		// TODO
+		String path = relativelyPath + "\\data\\";
 		String filepath = path + filename + ".txt";
 		String confpath = path + filename + "_conf.txt";
 		File file = new File(filepath);
@@ -155,70 +157,64 @@ public class Corpus {
 		FileWriter fw = null;
 		FileWriter conf_fw = null;
 		BufferedWriter bw = null;
-		
-		//TODO
+
+		// TODO
 		System.out.println(filepath);
-		
+
 		try {
-			if (!file.exists()) {
-				file.createNewFile();
-				System.out.println("success create file,the file is "
-						+ filepath);
-				fw = new FileWriter(file);
-				bw = new BufferedWriter(fw);
-				for (StringBuffer sb: text) {
-					bw.write(sb.toString()); 
-	                bw.newLine(); 
-				}
-				fw.flush();
+			file.createNewFile();
+			System.out.println("success create file,the file is " + filepath);
+			fw = new FileWriter(file);
+			bw = new BufferedWriter(fw);
+			for (StringBuffer sb : text) {
+				bw.write(sb.toString());
+				bw.newLine();
 			}
+			fw.flush();
 
-			if (!conf_file.exists()) {
-				conf_file.createNewFile();
-				System.out.println("success create file,the file is "
-						+ confpath);
-				conf_fw = new FileWriter(conf_file);
-				String content = "";
-				String enter = "\n";
-				// 语料库大小
-				content += "corpus_size:" + this.corpus_size;
-				content += enter;
-				// 获得错误类型及数量
-				content += getErrorsNumber();
-				// 生成时间
-				String temp_str = "";
-				Date dt = new Date();
-				SimpleDateFormat sdf = new SimpleDateFormat(
-						"yyyy-MM-dd HH:mm:ss aa");
-				temp_str = sdf.format(dt);
-				content += "risen time:" + temp_str;
-				content += enter;
+			conf_file.createNewFile();
+			System.out.println("success create file,the file is " + confpath);
+			conf_fw = new FileWriter(conf_file);
+			String content = "";
+			String enter = "\n";
+			// 语料库大小
+			content += "corpus_size:" + this.corpus_size;
+			content += enter;
+			// 获得错误类型及数量
+			content += getErrorsNumber();
+			// 生成时间
+			String temp_str = "";
+			Date dt = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss aa");
+			temp_str = sdf.format(dt);
+			content += "risen time:" + temp_str;
+			content += enter;
 
-				String json = JSON.toJSONString(errors);
-				
-				// 输出
-				conf_fw.write(content, 0, content.length());
-				conf_fw.write(json, 0, json.length());
-				conf_fw.flush();
+			String json = JSON.toJSONString(errors);
 
-			}
+			// 输出
+			conf_fw.write(content, 0, content.length());
+			conf_fw.write(json, 0, json.length());
+			conf_fw.flush();
+
 		} catch (Exception e) {
 			System.out.println("Error: write file error!");
 			e.printStackTrace();
 		} finally {
-				bw.close();
-				fw.close();
-				conf_fw.close();
+			bw.close();
+			fw.close();
+			conf_fw.close();
 		}
 
 	}
-	
-	public void run(){
+
+	public void run() {
 		for (Error error : errors) {
 			error.process(text, errors);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		StringBuffer str = new StringBuffer("12345");
 		StringBuffer s = str.replace(1, 2, "|");
