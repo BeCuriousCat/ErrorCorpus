@@ -31,7 +31,7 @@ public class Corpus {
 		try {
 			this.text = getText(path, corpus_size);
 		} catch (IOException e) {
-			System.out.println("ÓïÁÏ¿â£º³õÊ¼»¯ÎÄ±¾Ê§°Ü£¡");
+			System.out.println("è¯­æ–™åº“ï¼šåˆå§‹åŒ–æ–‡æœ¬å¤±è´¥ï¼");
 			e.printStackTrace();
 		}
 
@@ -47,14 +47,14 @@ public class Corpus {
 		BufferedReader in = null;
 		int count = 0;
 		try {
-			System.out.println("ÒÔĞĞÎªµ¥Î»¶ÁÈ¡ÎÄ¼şÄÚÈİ£¬Ò»´Î¶ÁÒ»ÕûĞĞ£º");
+			System.out.println("ä»¥è¡Œä¸ºå•ä½è¯»å–æ–‡ä»¶å†…å®¹ï¼Œä¸€æ¬¡è¯»ä¸€æ•´è¡Œï¼š");
 			in = new BufferedReader(new InputStreamReader(new FileInputStream(
 					file), "UTF-8"));
 			String tempString = null;
 			int line_count = 0;
-			// Ò»´Î¶ÁÈëÒ»ĞĞ£¬Ö±µ½¶ÁÈënullÎªÎÄ¼ş½áÊø
+			// ä¸€æ¬¡è¯»å…¥ä¸€è¡Œï¼Œç›´åˆ°è¯»å…¥nullä¸ºæ–‡ä»¶ç»“æŸ
 			while ((tempString = in.readLine()) != null) {
-				// ÏÔÊ¾ĞĞºÅ
+				// æ˜¾ç¤ºè¡Œå·
 				StringBuffer bf = new StringBuffer();
 				bf.append(tempString);
 				line_count = bf.length();
@@ -67,7 +67,7 @@ public class Corpus {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼ş³ö´í£¡");
+			System.out.println("è¯»å–æ–‡ä»¶å‡ºé”™ï¼");
 			e.printStackTrace();
 		} finally {
 			in.close();
@@ -96,9 +96,9 @@ public class Corpus {
 	}
 
 	public void setErrors(ArrayList<Error> errors) {
-		// ÔÚ´íÎó´«Èëºó£¬¸ù¾İ´íÎó±ÈÀıÉèÖÃºÃ´íÎóÊıÁ¿
+		// åœ¨é”™è¯¯ä¼ å…¥åï¼Œæ ¹æ®é”™è¯¯æ¯”ä¾‹è®¾ç½®å¥½é”™è¯¯æ•°é‡
 		for (Error err : errors) {
-			err.setError_size((int) Math.ceil(corpus_size * err.getError_rate()));
+			err.setError_size(corpus_size);
 			this.error_rate += err.getError_rate();
 		}
 		this.errors = errors;
@@ -112,22 +112,20 @@ public class Corpus {
 	}
 
 	public void addErrors(Error err) {
-		// ÔÚ´íÎó´«Èëºó£¬¸ù¾İ´íÎó±ÈÀıÉèÖÃºÃ´íÎóÊıÁ¿
+		// åœ¨é”™è¯¯ä¼ å…¥åï¼Œæ ¹æ®é”™è¯¯æ¯”ä¾‹è®¾ç½®å¥½é”™è¯¯æ•°é‡
 		err.setError_size(this.corpus_size);
 		this.errors.add(err);
 
 		try {
-			for (Error error : errors) {
-				this.errs_number += error.getError_size();
-				this.error_rate += error.getError_rate();
-			}
+			this.errs_number += error.getError_size();
+			this.error_rate += error.getError_rate();
 		} catch (Exception e) {
 			System.out.println("init corpus wraning: errors is null");
 		}
 	}
 
 	/**
-	 * ·µ»Ø´íÎóÀàĞÍºÍÊıÄ¿
+	 * è¿”å›é”™è¯¯ç±»å‹å’Œæ•°ç›®
 	 * 
 	 * @return
 	 */
@@ -143,7 +141,7 @@ public class Corpus {
 	}
 
 	/**
-	 * °ÑÊı¾İĞ´Èëµ½ÎÄ¼ş
+	 * æŠŠæ•°æ®å†™å…¥åˆ°æ–‡ä»¶
 	 * 
 	 * @throws IOException
 	 */
@@ -177,12 +175,12 @@ public class Corpus {
 			conf_fw = new FileWriter(conf_file);
 			String content = "";
 			String enter = "\n";
-			// ÓïÁÏ¿â´óĞ¡
+			// è¯­æ–™åº“å¤§å°
 			content += "corpus_size:" + this.corpus_size;
 			content += enter;
-			// »ñµÃ´íÎóÀàĞÍ¼°ÊıÁ¿
+			// è·å¾—é”™è¯¯ç±»å‹åŠæ•°é‡
 			content += getErrorsNumber();
-			// Éú³ÉÊ±¼ä
+			// ç”Ÿæˆæ—¶é—´
 			String temp_str = "";
 			Date dt = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat(
@@ -193,7 +191,7 @@ public class Corpus {
 
 			String json = JSON.toJSONString(errors);
 
-			// Êä³ö
+			// è¾“å‡º
 			conf_fw.write(content, 0, content.length());
 			conf_fw.write(json, 0, json.length());
 			conf_fw.flush();
