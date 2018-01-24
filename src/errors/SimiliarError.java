@@ -61,7 +61,7 @@ public class SimiliarError extends Error {
 						index = getRondIndex(corpus_bfs,paragraph_index);
 						continue;
 					}
-					System.out.println("find a err position! :" + index);
+					//System.out.println("find a err position! :" + index);
 					break;
 				}
 				index += 1;
@@ -80,8 +80,9 @@ public class SimiliarError extends Error {
 			// 随机选择一个不相同的形近字进行替换
 			while (true) {
 				// 相似表中位置
-				int wrong_index = (int) Math.random()
-						* sim_store_table.get(st_index).size();
+				int wordsLength = sim_store_table.get(st_index).size();
+				int wrong_index = (int) (Math.random() * wordsLength);
+				//System.out.println(wrong_index);
 				char wrong_word = sim_store_table.get(st_index)
 						.get(wrong_index).charAt(0);
 				if (charAtText != wrong_word) {
@@ -179,8 +180,8 @@ public class SimiliarError extends Error {
 						sim_store_table.add(similar);
 					index += 1;
 				}
-				System.out.println(sim_store_table.size());
-				System.out.println("similar corpus completed!");
+				//System.out.println(sim_store_table.size());
+				System.out.println("similar corpus completed!共"+sim_store_table.size()+"行！");
 			} catch (Exception e) {
 				System.out.println("Error: init similiar words corpus error!");
 				e.printStackTrace();
