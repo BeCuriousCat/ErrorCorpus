@@ -98,30 +98,6 @@ public class SimiliarError extends Error {
 		return true;
 	}
 
-	
-
-	/**
-	 * 在段内获得一个随机索引
-	 * @param corpus_bfs
-	 * @param paragraph_index
-	 * @return
-	 */
-	private int getRondIndex(ArrayList<StringBuffer> corpus_bfs,
-			int paragraph_index) {
-		int index;
-		index = (int) (Math.random() * (corpus_bfs.get(paragraph_index).length() - 1));
-		return index;
-	}
-	/**
-	 * 获得随机的段落索引
-	 * @param corpus_bfs
-	 * @return
-	 */
-	private int getRondParagraphIndex(ArrayList<StringBuffer> corpus_bfs) {
-		int paragraph_index;
-		paragraph_index = (int) ( Math.random() * (corpus_bfs.size() - 1));
-		return paragraph_index;
-	}
 
 	/**
 	 * 初始化相似词库，读入内存，加快迭代时效率
