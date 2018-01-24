@@ -99,26 +99,7 @@ public class SimiliarError extends Error {
 	}
 
 	
-	/**
-	 * 这个易错字在整个语料库生成的错误中是否重复
-	 * @param errors
-	 * @param signs
-	 * @param index
-	 * @param paragraph_index
-	 * @param repeat
-	 * @return
-	 */
-	private boolean isRepeated(ArrayList<Error> errors, ArrayList<Sign> signs,
-			int index, int paragraph_index, boolean repeat) {
-		for (Error err : errors) {
-			for (Sign sign : signs) {
-				if (sign.getIndex() == index && sign.getParagraph() == paragraph_index) {
-					repeat = true;
-				}
-			}
-		}
-		return repeat;
-	}
+
 	/**
 	 * 在段内获得一个随机索引
 	 * @param corpus_bfs
