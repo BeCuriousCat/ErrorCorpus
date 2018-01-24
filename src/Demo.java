@@ -1,5 +1,8 @@
 import java.io.IOException;
 
+import errors.Error;
+import errors.SimiliarError;
+
 public class Demo {
 	public static void main(String[] args) {
 		

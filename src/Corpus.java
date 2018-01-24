@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 import com.alibaba.fastjson.JSON;
 
+import errors.Error;
+
 public class Corpus {
 
 	private String relativelyPath = System.getProperty("user.dir");
