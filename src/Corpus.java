@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 import com.alibaba.fastjson.JSON;
 
+import errors.Error;
+
 public class Corpus {
 
 	private String relativelyPath = System.getProperty("user.dir");
@@ -31,7 +33,7 @@ public class Corpus {
 		try {
 			this.text = getText(path, corpus_size);
 		} catch (IOException e) {
-			System.out.println("è¯­æ–™åº“ï¼šåˆå§‹åŒ–æ–‡æœ¬å¤±è´¥ï¼");
+			System.out.println("ÓïÁÏ¿â£º³õÊ¼»¯ÎÄ±¾Ê§°Ü£¡");
 			e.printStackTrace();
 		}
 
@@ -47,14 +49,13 @@ public class Corpus {
 		BufferedReader in = null;
 		int count = 0;
 		try {
-			System.out.println("ä»¥è¡Œä¸ºå•ä½è¯»å–æ–‡ä»¶å†…å®¹ï¼Œä¸€æ¬¡è¯»ä¸€æ•´è¡Œï¼š");
+			System.out.println("ÒÔĞĞÎªµ¥Î»¶ÁÈ¡ÎÄ¼şÄÚÈİ£¬Ò»´Î¶ÁÒ»ÕûĞĞ£º");
 			in = new BufferedReader(new InputStreamReader(new FileInputStream(
 					file), "UTF-8"));
 			String tempString = null;
 			int line_count = 0;
-			// ä¸€æ¬¡è¯»å…¥ä¸€è¡Œï¼Œç›´åˆ°è¯»å…¥nullä¸ºæ–‡ä»¶ç»“æŸ
+			// Ò»´Î¶ÁÈëÒ»ĞĞ£¬Ö±µ½¶ÁÈënullÎªÎÄ¼ş½áÊø
 			while ((tempString = in.readLine()) != null) {
-				// æ˜¾ç¤ºè¡Œå·
 				StringBuffer bf = new StringBuffer();
 				bf.append(tempString);
 				line_count = bf.length();
@@ -67,7 +68,7 @@ public class Corpus {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("è¯»å–æ–‡ä»¶å‡ºé”™ï¼");
+			System.out.println("¶ÁÈ¡ÎÄ¼ş³ö´í£¡");
 			e.printStackTrace();
 		} finally {
 			in.close();
@@ -96,9 +97,9 @@ public class Corpus {
 	}
 
 	public void setErrors(ArrayList<Error> errors) {
-		// åœ¨é”™è¯¯ä¼ å…¥åï¼Œæ ¹æ®é”™è¯¯æ¯”ä¾‹è®¾ç½®å¥½é”™è¯¯æ•°é‡
+		// ÔÚ´íÎó´«Èëºó£¬¸ù¾İ´íÎó±ÈÀıÉèÖÃºÃ´íÎóÊıÁ¿
 		for (Error err : errors) {
-			err.setError_size(corpus_size);
+			err.setError_size((int) Math.ceil(corpus_size * err.getError_rate()));
 			this.error_rate += err.getError_rate();
 		}
 		this.errors = errors;
@@ -112,20 +113,22 @@ public class Corpus {
 	}
 
 	public void addErrors(Error err) {
-		// åœ¨é”™è¯¯ä¼ å…¥åï¼Œæ ¹æ®é”™è¯¯æ¯”ä¾‹è®¾ç½®å¥½é”™è¯¯æ•°é‡
+		// ÔÚ´íÎó´«Èëºó£¬¸ù¾İ´íÎó±ÈÀıÉèÖÃºÃ´íÎóÊıÁ¿
 		err.setError_size(this.corpus_size);
 		this.errors.add(err);
 
 		try {
-			this.errs_number += error.getError_size();
-			this.error_rate += error.getError_rate();
+			for (Error error : errors) {
+				this.errs_number += error.getError_size();
+				this.error_rate += error.getError_rate();
+			}
 		} catch (Exception e) {
 			System.out.println("init corpus wraning: errors is null");
 		}
 	}
 
 	/**
-	 * è¿”å›é”™è¯¯ç±»å‹å’Œæ•°ç›®
+	 * ·µ»Ø´íÎóÀàĞÍºÍÊıÄ¿
 	 * 
 	 * @return
 	 */
@@ -141,12 +144,11 @@ public class Corpus {
 	}
 
 	/**
-	 * æŠŠæ•°æ®å†™å…¥åˆ°æ–‡ä»¶
+	 * °ÑÊı¾İĞ´Èëµ½ÎÄ¼ş
 	 * 
 	 * @throws IOException
 	 */
 	public void write(String filename) throws IOException {
-		// TODO
 		String path = relativelyPath + "\\data\\";
 		String filepath = path + filename + ".txt";
 		String confpath = path + filename + "_conf.txt";
@@ -156,7 +158,6 @@ public class Corpus {
 		FileWriter conf_fw = null;
 		BufferedWriter bw = null;
 
-		// TODO
 		System.out.println(filepath);
 
 		try {
@@ -175,12 +176,12 @@ public class Corpus {
 			conf_fw = new FileWriter(conf_file);
 			String content = "";
 			String enter = "\n";
-			// è¯­æ–™åº“å¤§å°
+			// ÓïÁÏ¿â´óĞ¡
 			content += "corpus_size:" + this.corpus_size;
 			content += enter;
-			// è·å¾—é”™è¯¯ç±»å‹åŠæ•°é‡
+			// »ñµÃ´íÎóÀàĞÍ¼°ÊıÁ¿
 			content += getErrorsNumber();
-			// ç”Ÿæˆæ—¶é—´
+			// Éú³ÉÊ±¼ä
 			String temp_str = "";
 			Date dt = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat(
@@ -191,7 +192,7 @@ public class Corpus {
 
 			String json = JSON.toJSONString(errors);
 
-			// è¾“å‡º
+			// Êä³ö
 			conf_fw.write(content, 0, content.length());
 			conf_fw.write(json, 0, json.length());
 			conf_fw.flush();

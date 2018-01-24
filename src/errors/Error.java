@@ -1,8 +1,6 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
+package errors;
 
+import java.util.ArrayList;
 public abstract class Error {
 	/**
 	 * @param name describe the error name
