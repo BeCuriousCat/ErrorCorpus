@@ -59,7 +59,7 @@ public class SimiliarError extends Error {
 					if(repeat == true){
 						paragraph_index = getRondParagraphIndex(corpus_bfs);
 						index = getRondIndex(corpus_bfs,paragraph_index);
-						break;
+						continue;
 					}
 					System.out.println("find a err position! :" + index);
 					break;
@@ -80,14 +80,14 @@ public class SimiliarError extends Error {
 			// 随机选择一个不相同的形近字进行替换
 			while (true) {
 				// 相似表中位置
-				int correct_index = (int) Math.random()
+				int wrong_index = (int) Math.random()
 						* sim_store_table.get(st_index).size();
-				char correct_word = sim_store_table.get(st_index)
-						.get(correct_index).charAt(0);
-				if (charAtText != correct_word) {
-					String wrong_word = paragraph.substring(index, index+1);
-					paragraph.replace(index, index + 1, "" + correct_word);
-					Sign sign = new Sign(paragraph_index, index, Character.toString(correct_word), wrong_word);
+				char wrong_word = sim_store_table.get(st_index)
+						.get(wrong_index).charAt(0);
+				if (charAtText != wrong_word) {
+					String correct_word = StringAtText;
+					paragraph.replace(index, index + 1, "" + wrong_word);
+					Sign sign = new Sign(paragraph_index, index, Character.toString(wrong_word), correct_word);
 					this.getSigns().add(sign);
 					break;
 				}
