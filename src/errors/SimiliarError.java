@@ -1,3 +1,4 @@
+package errors;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,9 +59,9 @@ public class SimiliarError extends Error {
 					if(repeat == true){
 						paragraph_index = getRondParagraphIndex(corpus_bfs);
 						index = getRondIndex(corpus_bfs,paragraph_index);
-						break;
+						continue;
 					}
-					System.out.println("find a err position! :" + index);
+					//System.out.println("find a err position! :" + index);
 					break;
 				}
 				index += 1;
@@ -79,14 +80,15 @@ public class SimiliarError extends Error {
 			// 随机选择一个不相同的形近字进行替换
 			while (true) {
 				// 相似表中位置
-				int correct_index = (int) Math.random()
-						* sim_store_table.get(st_index).size();
-				char correct_word = sim_store_table.get(st_index)
-						.get(correct_index).charAt(0);
-				if (charAtText != correct_word) {
-					String wrong_word = paragraph.substring(index, index+1);
-					paragraph.replace(index, index + 1, "" + correct_word);
-					Sign sign = new Sign(paragraph_index, index, Character.toString(correct_word), wrong_word);
+				int wordsLength = sim_store_table.get(st_index).size();
+				int wrong_index = (int) (Math.random() * wordsLength);
+				//System.out.println(wrong_index);
+				char wrong_word = sim_store_table.get(st_index)
+						.get(wrong_index).charAt(0);
+				if (charAtText != wrong_word) {
+					String correct_word = StringAtText;
+					paragraph.replace(index, index + 1, "" + wrong_word);
+					Sign sign = new Sign(paragraph_index, index, Character.toString(wrong_word), correct_word);
 					this.getSigns().add(sign);
 					break;
 				}
@@ -96,49 +98,6 @@ public class SimiliarError extends Error {
 		return true;
 	}
 
-	
-	/**
-	 * 这个易错字在整个语料库生成的错误中是否重复
-	 * @param errors
-	 * @param signs
-	 * @param index
-	 * @param paragraph_index
-	 * @param repeat
-	 * @return
-	 */
-	private boolean isRepeated(ArrayList<Error> errors, ArrayList<Sign> signs,
-			int index, int paragraph_index, boolean repeat) {
-		for (Error err : errors) {
-			for (Sign sign : signs) {
-				if (sign.getIndex() == index && sign.getParagraph() == paragraph_index) {
-					repeat = true;
-				}
-			}
-		}
-		return repeat;
-	}
-	/**
-	 * 在段内获得一个随机索引
-	 * @param corpus_bfs
-	 * @param paragraph_index
-	 * @return
-	 */
-	private int getRondIndex(ArrayList<StringBuffer> corpus_bfs,
-			int paragraph_index) {
-		int index;
-		index = (int) (Math.random() * (corpus_bfs.get(paragraph_index).length() - 1));
-		return index;
-	}
-	/**
-	 * 获得随机的段落索引
-	 * @param corpus_bfs
-	 * @return
-	 */
-	private int getRondParagraphIndex(ArrayList<StringBuffer> corpus_bfs) {
-		int paragraph_index;
-		paragraph_index = (int) ( Math.random() * (corpus_bfs.size() - 1));
-		return paragraph_index;
-	}
 
 	/**
 	 * 初始化相似词库，读入内存，加快迭代时效率
@@ -178,8 +137,8 @@ public class SimiliarError extends Error {
 						sim_store_table.add(similar);
 					index += 1;
 				}
-				System.out.println(sim_store_table.size());
-				System.out.println("similar corpus completed!");
+				//System.out.println(sim_store_table.size());
+				System.out.println("similar corpus completed!共"+sim_store_table.size()+"行！");
 			} catch (Exception e) {
 				System.out.println("Error: init similiar words corpus error!");
 				e.printStackTrace();

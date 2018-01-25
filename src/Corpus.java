@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 import com.alibaba.fastjson.JSON;
 
+import errors.Error;
+
 public class Corpus {
 
 	private String relativelyPath = System.getProperty("user.dir");
@@ -54,7 +56,6 @@ public class Corpus {
 			int line_count = 0;
 			// 一次读入一行，直到读入null为文件结束
 			while ((tempString = in.readLine()) != null) {
-				// 显示行号
 				StringBuffer bf = new StringBuffer();
 				bf.append(tempString);
 				line_count = bf.length();
@@ -148,7 +149,6 @@ public class Corpus {
 	 * @throws IOException
 	 */
 	public void write(String filename) throws IOException {
-		// TODO
 		String path = relativelyPath + "\\data\\";
 		String filepath = path + filename + ".txt";
 		String confpath = path + filename + "_conf.txt";
@@ -158,7 +158,6 @@ public class Corpus {
 		FileWriter conf_fw = null;
 		BufferedWriter bw = null;
 
-		// TODO
 		System.out.println(filepath);
 
 		try {
