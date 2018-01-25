@@ -94,7 +94,7 @@ public class SimiliarError extends Error {
 				}
 			}
 		}
-		System.out.println("替换完成！");
+		System.out.println("形似字替换完成！");
 		return true;
 	}
 
