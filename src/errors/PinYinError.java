@@ -22,7 +22,8 @@ public class PinYinError extends Error {
 
 	public PinYinError(String name, double rate) {
 		super(name, rate);
-		// TODO Auto-generated constructor stub
+		ArrayList<Sign> sign = new ArrayList<Sign>();
+		setSigns(sign);
 	}
 
 	@Override
@@ -52,21 +53,22 @@ public class PinYinError extends Error {
 		System.out.println("开始添加音近字错误！");
 		int count = 0; //计数器，用来选择set中的随机一个字符
 		char correct_word;
-		char wrong_word;
+		char wrong_word = 0;
 		//TODO
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < getError_size(); i++) {
 			//随机索引
 			paragraph_index = getRondParagraphIndex(corpus_bfs);
 			index = getRondIndex(corpus_bfs, paragraph_index);
 			while(true){
 				paragraph = corpus_bfs.get(paragraph_index);
 				charAtText = paragraph.charAt(index);
-				System.out.println("======"+charAtText);
+				//System.out.println("======"+charAtText);
 				try {
 					pinyin = PinyinHelper.toHanyuPinyinStringArray(charAtText,deFormat);
-					if(pinyin.length > 1){
-						System.out.println(pinyin[0]);
-					}
+					//多音字会长度会大于1
+//					if(pinyin.length > 1){
+//						System.out.println(pinyin[0]);
+//					}
 					
 					if(!map.containsKey(pinyin[0])){
 						continue;
@@ -78,18 +80,35 @@ public class PinYinError extends Error {
 						//System.out.println(map.get(pinyin[0]));
 						HashSet<Character> set = map.get(pinyin[0]);
 						int max = set.size();
+						//若改拼音下只有一个汉字，则重新选择
+						if(max <= 1){
+							continue;
+						}
 						int rand = (int) (Math.random() * max);
 						Iterator<Character> iter = set.iterator();
 						count = 0;
+						//从同一个拼音中选择随机同音字
 						while(iter.hasNext()){
 							if(rand == count){
-								correct_word = iter.next();
+								wrong_word = iter.next();
+								break;
 							}
+							count++;
 						}
+						
+						correct_word = charAtText;
+						paragraph.replace(index, index+1, String.valueOf(wrong_word));
+						//为输出显示：
+						//paragraph_index += 1;
+						//index +=1;
+						//System.out.println("第"+paragraph_index+"段第"+index+"处："+correct_word+"替换成"+wrong_word);
+						break;
 					}
 				} catch (Exception e) {
-					System.out.println(charAtText+":转换成拼音出错！");
-					e.printStackTrace();
+					System.out.println(charAtText+":转换成拼音出错！以跳过重新选择！");
+					//e.printStackTrace();
+					paragraph_index = getRondParagraphIndex(corpus_bfs);
+					index = getRondIndex(corpus_bfs, paragraph_index);
 				}
 				
 			}
@@ -97,7 +116,10 @@ public class PinYinError extends Error {
 		
 		return false;
 	}
-	
+	/**
+	 * 测试！
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		StringBuffer sb = new StringBuffer();
 		StringBuffer sb1 = new StringBuffer();

@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import errors.Error;
+import errors.PinYinError;
 import errors.SimiliarError;
 
 public class Demo {
@@ -10,16 +11,19 @@ public class Demo {
 		int corpus_size = 20000;
 		
 		Error simError = new SimiliarError("SimiliarError", 0.001);
+		Error pinyinError = new PinYinError("PinYinError",0.001);
+		
 		
 		Corpus cor = new Corpus(path, corpus_size);
 		cor.addErrors(simError);
-		
+		cor.addErrors(pinyinError);
 		cor.run();
 		
 		String filename = "similar_corpus";
 		
+		boolean withConfHeader = false;
 		try {
-			cor.write(filename);
+			cor.write(filename,withConfHeader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

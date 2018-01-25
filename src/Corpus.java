@@ -116,7 +116,9 @@ public class Corpus {
 		// 在错误传入后，根据错误比例设置好错误数量
 		err.setError_size(this.corpus_size);
 		this.errors.add(err);
-
+		//先清零，后计算
+		this.errs_number = 0;
+		this.error_rate = 0.0;
 		try {
 			for (Error error : errors) {
 				this.errs_number += error.getError_size();
@@ -139,6 +141,7 @@ public class Corpus {
 			str += "error type:" + error.getName() + " rate:"
 					+ error.getError_rate() + " number:"
 					+ error.getError_size();
+			str += "\n";
 		}
 		return str;
 	}
@@ -148,7 +151,7 @@ public class Corpus {
 	 * 
 	 * @throws IOException
 	 */
-	public void write(String filename) throws IOException {
+	public void write(String filename, boolean withHeader) throws IOException {
 		String path = relativelyPath + "\\data\\";
 		String filepath = path + filename + ".txt";
 		String confpath = path + filename + "_conf.txt";
@@ -176,25 +179,31 @@ public class Corpus {
 			conf_fw = new FileWriter(conf_file);
 			String content = "";
 			String enter = "\n";
+			String header = "";
 			// 语料库大小
-			content += "corpus_size:" + this.corpus_size;
-			content += enter;
+			header += "corpus_size:" + this.corpus_size;
+			header += enter;
 			// 获得错误类型及数量
-			content += getErrorsNumber();
+			header += getErrorsNumber();
 			// 生成时间
 			String temp_str = "";
 			Date dt = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat(
 					"yyyy-MM-dd HH:mm:ss aa");
 			temp_str = sdf.format(dt);
-			content += "risen time:" + temp_str;
-			content += enter;
+			header += "Risen time:" + temp_str;
+			header += enter;
 
 			String json = JSON.toJSONString(errors);
 
+			if(withHeader){
+				content = header + json;
+			}else{
+				content = json;
+			}
+			
 			// 输出
 			conf_fw.write(content, 0, content.length());
-			conf_fw.write(json, 0, json.length());
 			conf_fw.flush();
 
 		} catch (Exception e) {
