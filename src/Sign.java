@@ -1,4 +1,3 @@
-package errors;
 
 public class Sign {
 	private int paragraph;
