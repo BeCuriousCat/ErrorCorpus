@@ -102,10 +102,14 @@ public class PinYinError extends Error {
 						//paragraph_index += 1;
 						//index +=1;
 						//System.out.println("第"+paragraph_index+"段第"+index+"处："+correct_word+"替换成"+wrong_word);
+						
+						Sign sign = new Sign(paragraph_index, index, Character.toString(wrong_word), Character.toString(correct_word));
+						signs.add(sign);
+						
 						break;
 					}
 				} catch (Exception e) {
-					System.out.println(charAtText+":转换成拼音出错！以跳过重新选择！");
+					System.out.println(charAtText+":转换成拼音出错！已跳过重新选择！");
 					//e.printStackTrace();
 					paragraph_index = getRondParagraphIndex(corpus_bfs);
 					index = getRondIndex(corpus_bfs, paragraph_index);
@@ -113,7 +117,8 @@ public class PinYinError extends Error {
 				
 			}
 		}
-		
+		//把生成的位置放入类属性中
+		this.setSigns(signs);
 		return false;
 	}
 	/**

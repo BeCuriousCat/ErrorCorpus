@@ -1,15 +1,15 @@
 package errors;
 
 public class Sign {
-	private int paragraph;
+	private int paragraph_index;
 	private int index;
 	private String correct_word;
 	private String wrong_word;
 	public int getParagraph() {
-		return paragraph;
+		return paragraph_index;
 	}
 	public void setParagraph(int paragraph) {
-		this.paragraph = paragraph;
+		this.paragraph_index = paragraph;
 	}
 	public int getIndex() {
 		return index;
@@ -31,7 +31,7 @@ public class Sign {
 	}
 	public Sign(int paragraph, int index, String correct_word, String wrong_word) {
 		super();
-		this.paragraph = paragraph;
+		this.paragraph_index = paragraph;
 		this.index = index;
 		this.correct_word = correct_word;
 		this.wrong_word = wrong_word;

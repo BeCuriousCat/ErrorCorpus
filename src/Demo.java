@@ -9,9 +9,9 @@ public class Demo {
 		
 		String path = System.getProperty("user.dir")+"/data/201602.txt";
 		int corpus_size = 20000;
-		
-		Error simError = new SimiliarError("SimiliarError", 0.001);
-		Error pinyinError = new PinYinError("PinYinError",0.001);
+		//…Ë÷√¥ÌŒÛµƒ√˚≥∆
+		Error simError = new SimiliarError(Error.SimiliarError, 0.001);
+		Error pinyinError = new PinYinError(Error.PinYinError,0.001);
 		
 		
 		Corpus cor = new Corpus(path, corpus_size);

@@ -17,6 +17,9 @@ public abstract class Error {
 	private int error_size = 0;
 	private double error_rate = 0;
 	private ArrayList<Sign> signs = null;
+	public static String SimiliarError = "similiar";
+	public static String PinYinError = "pinyin";
+	
 
 	public Error(String name, double rate) {
 		super();
