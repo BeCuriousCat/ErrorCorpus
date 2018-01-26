@@ -1,4 +1,4 @@
-package corpusgeneration;
+package errors;
 
 import java.util.ArrayList;
 import java.util.Random;

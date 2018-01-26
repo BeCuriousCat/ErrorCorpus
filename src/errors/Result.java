@@ -1,4 +1,4 @@
-package corpusgeneration;
+package errors;
 
 public class Result{
 	int location;

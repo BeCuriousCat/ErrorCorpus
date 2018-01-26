@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GeneratePY2HanZiLib {
+public class generatePY2HanZiLib {
 	String path = System.getProperty("user.dir") + "/corpusLib/pinyin.txt";
 
 	public HashMap<String, HashSet<Character>> readText() throws IOException {
@@ -132,7 +132,7 @@ public class GeneratePY2HanZiLib {
 	}
 
 	public static void main(String[] args) throws IOException {
-		GeneratePY2HanZiLib genLib = new GeneratePY2HanZiLib();
+		generatePY2HanZiLib genLib = new generatePY2HanZiLib();
 		HashMap<String, HashSet<Character>> map = genLib.readText();
 		String fileName = System.getProperty("user.dir")
 				+ "/corpusLib/pinyin2hanzi.txt";
