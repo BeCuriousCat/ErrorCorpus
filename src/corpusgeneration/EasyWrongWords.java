@@ -7,34 +7,7 @@ import java.util.Random;
 import textpreprocessing.EasyWrongTableProcessing;
 import wordsegment.NLPIR;
 
-class Result{
-	int location;
-	String value;
-	
-	public Result(int location, String value){
-		this.location = location;
-		this.value = value;
-	}
-	
-	public String getValue() {
-		return value;
-	}
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public int getLocation() {
-		return location;
-	}
-
-	public void setLocation(int location) {
-		this.location = location;
-	}
-
-	
-	
-}
 
 public class EasyWrongWords extends Error{
 	
@@ -53,7 +26,7 @@ public class EasyWrongWords extends Error{
 		
 		HashMap<String,ArrayList> map = new EasyWrongTableProcessing().easyWrongTableProcessing();
 		//int errorNum = this.getError_size();
-		int errorNum = 2;
+		int errorNum = this.getError_size();
 	    ArrayList< ArrayList<Result>> result = new ArrayList< ArrayList<Result>>();
 	    
 	    int paraNum = corpus_bf.size();
@@ -104,8 +77,10 @@ public class EasyWrongWords extends Error{
 							rep = (String) map.get(r.getValue()).get(index);
 						}
 						
-						corpus_bf.get(para).replace(r.getLocation(), r.getLocation()+r.getValue().length(), rep);
+						corpus_bf.get(para).replace(r.getLocation(), (r.getLocation()+r.getValue().length()), rep);
 						System.out.println("ori:"+ r.getValue()+"Rep"+rep);
+						Sign sign = new Sign(para, r.getLocation(), r.getValue(), rep);
+						this.getSigns().add(sign);
 						errorNum--;
 					}
 					result.get(para).remove(num);
@@ -115,7 +90,7 @@ public class EasyWrongWords extends Error{
 			
 			totalWords = 0;
 			for(int i = 0; i<result.size();i++){
-				System.out.println(result.get(i).size());
+				//System.out.println(result.get(i).size());
 				totalWords += result.get(i).size();
 			}
 		}
@@ -136,7 +111,7 @@ public class EasyWrongWords extends Error{
 		StringBuffer s1= new StringBuffer("神烦狗父爱搜发个图分公司发给下");
 		StringBuffer s2= new StringBuffer("是广发四姑父分噩耗");
 		StringBuffer s3= new StringBuffer("送饭翻译等VB都我挨个我GV阿福迪哦我的华盛顿和时间段和司法  ");
-		StringBuffer s4= new StringBuffer("发顺丰同一人乌干达");
+		StringBuffer s4= new StringBuffer("发顺丰仲裁同一人乌干达");
 		corpus_bf.add(s1);
 		corpus_bf.add(s2);
 		corpus_bf.add(s3);

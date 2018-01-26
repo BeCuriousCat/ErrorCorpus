@@ -10,8 +10,7 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-//import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSON;
 
 public class Corpus {
 
@@ -189,14 +188,14 @@ public class Corpus {
 			content += "risen time:" + temp_str;
 			content += enter;
 			
-			/*
+			
 			String json = JSON.toJSONString(errors);
 
 			// Êä³ö
 			conf_fw.write(content, 0, content.length());
 			conf_fw.write(json, 0, json.length());
 			conf_fw.flush();
-			*/
+			
 
 		} catch (Exception e) {
 			System.out.println("Error: write file error!");

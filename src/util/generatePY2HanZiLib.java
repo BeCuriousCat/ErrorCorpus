@@ -69,7 +69,7 @@ public class GeneratePY2HanZiLib {
 					i += 1;
 				}
 			}
-			System.out.println("共处理" + count + "行！");
+			System.out.println("pinyin.txt共处理" + count + "行！");
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("读取或处理pinyin.txt文件出错！");
