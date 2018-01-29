@@ -28,23 +28,24 @@ public class NLPIR {
 		
 		int init_flag = CLibrary.Instance.NLPIR_Init(argu, charset_type, "0");
 		String nativeBytes = null;
-
+		
 		if (0 == init_flag) {
 			nativeBytes = CLibrary.Instance.NLPIR_GetLastErrorMsg();
 			System.err.println("初始化失败！fail reason is "+nativeBytes);
 			return "";
 		}
 		
+		
 
 		//String nativeBytes = null;
 		try {
 			nativeBytes = CLibrary.Instance.NLPIR_ParagraphProcess(strInput, 0);
-
 			//System.out.println("分词结果为： " + nativeBytes);
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
+		
 		CLibrary.Instance.NLPIR_Exit();
 		return nativeBytes;
 	}

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import util.generatePY2HanZiLib;
+import util.GeneratePY2HanZiLib;
 //pinyin4j entry point 
 import net.sourceforge.pinyin4j.PinyinHelper;
 
@@ -155,7 +155,7 @@ public class PinYinError extends Error {
  	}
 	//初始化拼音查找表
 	private void initPinYinLib() {
-		generatePY2HanZiLib PYLib = new generatePY2HanZiLib();
+		GeneratePY2HanZiLib PYLib = new GeneratePY2HanZiLib();
 		try {
 			System.out.println("初始化拼音查找库");
 			map = PYLib.readText();

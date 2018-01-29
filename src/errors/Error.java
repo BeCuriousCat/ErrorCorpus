@@ -19,6 +19,9 @@ public abstract class Error {
 	private ArrayList<Sign> signs = null;
 	public static String SimiliarError = "similiar";
 	public static String PinYinError = "pinyin";
+	public static String EasyWrongWords = "easyWrongWords";
+	public static String NumbersError = "numbersError";
+	public static String PunctuationError = "punctuationError";
 	
 
 	public Error(String name, double rate) {

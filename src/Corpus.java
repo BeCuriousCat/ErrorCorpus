@@ -53,25 +53,39 @@ public class Corpus {
 			in = new BufferedReader(new InputStreamReader(new FileInputStream(
 					file), "UTF-8"));
 			String tempString = null;
-			int line_count = 0;
+			
 			// 一次读入一行，直到读入null为文件结束
-			while ((tempString = in.readLine()) != null) {
-				StringBuffer bf = new StringBuffer();
-				bf.append(tempString);
-				line_count = bf.length();
-				if ((count + line_count) < corpus_size) {
-					count += line_count;
-					bfs.add(bf);
-				} else {
-					bf.setLength(corpus_size - count);
+			if(this.corpus_size <= 0){
+				while ((tempString = in.readLine()) != null) {
+					StringBuffer bf = new StringBuffer();
+					bf.append(tempString);
 					bfs.add(bf);
 				}
+				System.out.println("读完文章");
+			}else{
+				int line_count = 0;
+				while ((tempString = in.readLine()) != null) {
+					StringBuffer bf = new StringBuffer();
+					bf.append(tempString);
+					line_count = bf.length();
+					if ((count + line_count) < corpus_size) {
+						count += line_count;
+						bfs.add(bf);
+					} else {
+						bf.setLength(corpus_size - count);
+						bfs.add(bf);
+					}
+				}
 			}
+			
 			count = 0;
 			for (StringBuffer bf : bfs) {
 				count +=bf.length(); 
 			}
-			
+			if(this.corpus_size<=0){
+				System.out.println("读取全文本");
+				this.corpus_size = count;
+			}
 			//如果设置的大小超出了文件本身的大小，则设置语料库大小为文件大小
 			if(  count < corpus_size){
 				System.out.println("文件("+path+")大小小于设置的Corpus Size（"+corpus_size+",强制转化为文件大小！");
@@ -85,6 +99,7 @@ public class Corpus {
 		} finally {
 			in.close();
 		}
+		
 		return bfs;
 	}
 
@@ -231,6 +246,7 @@ public class Corpus {
 
 	public void run() {
 		for (Error error : errors) {
+//			System.out.println("test s" + error);
 			error.process(text, errors);
 		}
 	}

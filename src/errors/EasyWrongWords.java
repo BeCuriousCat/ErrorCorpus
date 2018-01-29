@@ -24,6 +24,7 @@ public class EasyWrongWords extends Error{
 	//2. 将生成的错误写入ArrayList<StringBuffer> corpus_bf中
 	public  boolean process(ArrayList<StringBuffer> corpus_bf,ArrayList<Error> errors){
 		
+		
 		HashMap<String,ArrayList> map = new EasyWrongTableProcessing().easyWrongTableProcessing();
 		//int errorNum = this.getError_size();
 		int errorNum = this.getError_size();
@@ -31,7 +32,9 @@ public class EasyWrongWords extends Error{
 	    
 	    int paraNum = corpus_bf.size();
 		for(int i=0;i<paraNum;i++){
+			
 			String wordSeg = new NLPIR().wordSegment(corpus_bf.get(i).toString()); //进行句子分词
+	
 			//System.out.println(wordSeg);
 			String[] wordList = wordSeg.split(" ");
 			
@@ -39,12 +42,15 @@ public class EasyWrongWords extends Error{
 			
 			int loc = 0;	
 			for(String words:wordList){
+				
 				Result r = new Result(loc, words);
 				res.add(r);
 				loc += words.length();
 			}
 			result.add(res);
+			
 		}
+
 		
 		/*
 		for(ArrayList<Result> res: result){
@@ -52,10 +58,11 @@ public class EasyWrongWords extends Error{
 				System.out.println("location:"+r.getLocation()+"value:"+r.getValue());
 			}
 		}*/
+		
 		Random random = new Random();
 		int totalWords = 0;
 		for(int i = 0; i<result.size();i++){
-			System.out.println(result.get(i).size());
+			//System.out.println(result.get(i).size());
 			totalWords += result.get(i).size();
 		}
 		while(totalWords>0&&errorNum>0){
@@ -78,7 +85,7 @@ public class EasyWrongWords extends Error{
 						}
 						
 						corpus_bf.get(para).replace(r.getLocation(), (r.getLocation()+r.getValue().length()), rep);
-						System.out.println("ori:"+ r.getValue()+"Rep"+rep);
+						//System.out.println("ori:"+ r.getValue()+"Rep"+rep);
 						Sign sign = new Sign(para, r.getLocation(), r.getValue(), rep);
 						this.getSigns().add(sign);
 						errorNum--;
@@ -96,11 +103,11 @@ public class EasyWrongWords extends Error{
 		}
 
 		
-		System.out.println("++++++++++++++++++++");
-		for(ArrayList<Result> res: result){
-			System.out.println(res.size());
-		}
-		System.out.println("remain"+errorNum+"words didnot be generated");
+		//System.out.println("++++++++++++++++++++");
+		//for(ArrayList<Result> res: result){
+		//	System.out.println(res.size());
+		//}
+		//System.out.println("remain"+errorNum+"words didnot be generated");
 		
 		return true;
 	}
