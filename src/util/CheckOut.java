@@ -33,4 +33,6 @@ public class CheckOut {
 		System.out.println("函数没有写完");
 		return 0;
 	}
+
 }
+

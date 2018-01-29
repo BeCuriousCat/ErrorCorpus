@@ -1,7 +1,4 @@
 /bin/*
+/data/*
+.classpath
 
-/similar_corpus_conf.txt
-
-/similar_corpus.txt
-/bin/
-/.classpath

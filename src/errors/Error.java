@@ -22,6 +22,7 @@ public abstract class Error {
 	public static String EasyWrongWords = "easyWrongWords";
 	public static String NumbersError = "numbersError";
 	public static String PunctuationError = "punctuationError";
+
 	
 
 	public Error(String name, double rate) {

@@ -5,12 +5,12 @@ import errors.PinYinError;
 import errors.EasyWrongWords;
 import errors.NumbersError;
 import errors.PunctuationError;
+import errors.PinYinError;
 import errors.SimiliarError;
 
 
 public class Demo {
 	public static void main(String[] args) {
-		
 		String path = System.getProperty("user.dir")+"/data/201604.txt";
 		int corpus_size = -1;
 		float rate = 0.0005f;
@@ -53,7 +53,6 @@ public class Demo {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
 		
 	}
 }

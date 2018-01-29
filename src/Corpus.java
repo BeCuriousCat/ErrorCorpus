@@ -59,9 +59,7 @@ public class Corpus {
 				while ((tempString = in.readLine()) != null) {
 					StringBuffer bf = new StringBuffer();
 					bf.append(tempString);
-					bfs.add(bf);
-				}
-				System.out.println("读完文章");
+					System.out.println("读完文章");
 			}else{
 				int line_count = 0;
 				while ((tempString = in.readLine()) != null) {
@@ -86,6 +84,12 @@ public class Corpus {
 				System.out.println("读取全文本");
 				this.corpus_size = count;
 			}
+
+			count = 0;
+			for (StringBuffer bf : bfs) {
+				count +=bf.length(); 
+			}
+
 			//如果设置的大小超出了文件本身的大小，则设置语料库大小为文件大小
 			if(  count < corpus_size){
 				System.out.println("文件("+path+")大小小于设置的Corpus Size（"+corpus_size+",强制转化为文件大小！");
