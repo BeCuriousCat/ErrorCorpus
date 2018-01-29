@@ -1,5 +1,4 @@
 /bin/*
 /data/similar_corpus_conf.txt
 /data/similar_corpus.txt
-.project
 .classpath
