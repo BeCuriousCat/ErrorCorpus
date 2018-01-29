@@ -55,17 +55,25 @@ public class PinYinError extends Error {
 		char correct_word;
 		char wrong_word = 0;
 		for (int i = 0; i < getError_size(); i++) {
-			//随机索引
-			paragraph_index = getRondParagraphIndex(corpus_bfs);
-			if( corpus_bfs.get(paragraph_index).length() == 0){
-				paragraph_index = getRondParagraphIndex(corpus_bfs);
-			}
-
-			index = getRondIndex(corpus_bfs, paragraph_index);
+			int loop_cnt = 0;
+			int repeat_cnt = 0;
 			while(true){
+				repeat = false;
+				//随机索引,选择一个字
+				paragraph_index = getRondParagraphIndex(corpus_bfs);
+				if( corpus_bfs.get(paragraph_index).length() <= 0){
+					paragraph_index = getRondParagraphIndex(corpus_bfs);
+				}
+				index = getRondIndex(corpus_bfs, paragraph_index);
 				paragraph = corpus_bfs.get(paragraph_index);
 				charAtText = paragraph.charAt(index);
 				//System.out.println("======"+charAtText);
+				loop_cnt +=1;
+				if( loop_cnt >= 5000) {
+					//TODO
+					System.out.println("Warning: loop times over"+loop_cnt);
+					//System.exit(1);
+				}
 				try {
 					pinyin = PinyinHelper.toHanyuPinyinStringArray(charAtText,deFormat);
 					//多音字会长度会大于1，选择其他任意一个，赋值给pinyin[0]
@@ -77,22 +85,13 @@ public class PinYinError extends Error {
 					}
 					
 					if(!map.containsKey(pinyin[0])){
-						//随机索引
-						paragraph_index = getRondParagraphIndex(corpus_bfs);
-						if( corpus_bfs.get(paragraph_index).length() == 0){
-							paragraph_index = getRondParagraphIndex(corpus_bfs);
-						}
-						index = getRondIndex(corpus_bfs, paragraph_index);
 						continue;
 					}else{
-						repeat = isRepeated(errors, signs, index, paragraph_index, repeat);	
+						repeat = isRepeated(errors, index, paragraph_index, repeat);	
 						if(repeat){
-							//随机索引
-							paragraph_index = getRondParagraphIndex(corpus_bfs);
-							if( corpus_bfs.get(paragraph_index).length() == 0){
-								paragraph_index = getRondParagraphIndex(corpus_bfs);
-							}
-							index = getRondIndex(corpus_bfs, paragraph_index);
+							repeat_cnt+=1;
+							if( repeat_cnt > 500)
+								System.out.println("Wraning:repeated"+repeat_cnt);
 							continue;
 						}
 						//System.out.println(map.get(pinyin[0]));
@@ -100,12 +99,6 @@ public class PinYinError extends Error {
 						int max = set.size();
 						//若改拼音下只有一个汉字，则重新选择
 						if(max <= 1){
-							//随机索引
-							paragraph_index = getRondParagraphIndex(corpus_bfs);
-							if( corpus_bfs.get(paragraph_index).length() == 0){
-								paragraph_index = getRondParagraphIndex(corpus_bfs);
-							}
-							index = getRondIndex(corpus_bfs, paragraph_index);
 							continue;
 						}
 						int rand = (int) (Math.random() * max);

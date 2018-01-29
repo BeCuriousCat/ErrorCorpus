@@ -73,10 +73,12 @@ public class Corpus {
 					} else {
 						bf.setLength(corpus_size - count);
 						bfs.add(bf);
+						//数量到齐就跳出
+						break;
 					}
+					
 				}
 			}
-			
 			count = 0;
 			for (StringBuffer bf : bfs) {
 				count +=bf.length(); 
@@ -84,11 +86,6 @@ public class Corpus {
 			if(this.corpus_size<=0){
 				System.out.println("读取全文本");
 				this.corpus_size = count;
-			}
-
-			count = 0;
-			for (StringBuffer bf : bfs) {
-				count +=bf.length(); 
 			}
 
 			//如果设置的大小超出了文件本身的大小，则设置语料库大小为文件大小

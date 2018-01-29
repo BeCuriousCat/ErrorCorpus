@@ -11,12 +11,12 @@ import errors.SimiliarError;
 public class Demo {
 	public static void main(String[] args) {
 		String path = System.getProperty("user.dir") + "/data/201604.txt";
-		int corpus_size = -1;
+		int corpus_size = 2000000;
 		float rate = 0.0005f;
 		for (; rate <= 0.01; rate = rate + 0.0005f) {
 			// 设置错误的名称
-			Error easyWrongWords = new EasyWrongWords(Error.EasyWrongWords,
-					rate * 0.2);
+			//Error easyWrongWords = new EasyWrongWords(Error.EasyWrongWords,
+			//		rate * 0.2);
 			Error simError = new SimiliarError(Error.SimiliarError, rate * 0.4);
 			Error pinyinError = new PinYinError(Error.PinYinError, rate * 0.4);
 			// Error numbersError = new NumbersError(Error.NumbersError,0.001);
@@ -27,10 +27,9 @@ public class Demo {
 			Corpus cor = new Corpus(path, corpus_size);
 			System.out.println(cor.getCorpus_size());
 			// 将错误添加到语料库中
-			cor.addErrors(easyWrongWords);
+			//cor.addErrors(easyWrongWords);
 
 			cor.addErrors(simError);
-
 			cor.addErrors(pinyinError);
 
 			// cor.addErrors(numbersError);

@@ -88,12 +88,10 @@ public abstract class Error {
 	 * @return
 	 */
 	protected boolean isRepeated(ArrayList<Error> errors,
-			ArrayList<Sign> signs, int index, int paragraph_index,
-			boolean repeat) {
+			 int index, int paragraph_index, boolean repeat) {
 		for (Error err : errors) {
 			for (Sign sign : err.signs) {
-				if (sign.getIndex() == index
-						&& sign.getParagraph() == paragraph_index) {
+				if (sign.getIndex() == index && sign.getParagraph() == paragraph_index) {
 					repeat = true;
 				}
 			}

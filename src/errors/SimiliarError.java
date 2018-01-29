@@ -41,24 +41,24 @@ public class SimiliarError extends Error {
 			String StringAtText;//文本中的将被替代的一个字
 			int index;
 			int paragraph_index;
-			// 获得随机的段落数和索引
-			paragraph_index = getRondParagraphIndex(corpus_bfs);
-			index = getRondIndex(corpus_bfs, paragraph_index);
-			
 			StringBuffer paragraph = null;
 			while (true) {
-				paragraph = corpus_bfs.get(paragraph_index);
 				boolean repeat = false;
+				// 获得随机的段落数和索引
+				paragraph_index = getRondParagraphIndex(corpus_bfs);
+				index = getRondIndex(corpus_bfs, paragraph_index);
+				paragraph = corpus_bfs.get(paragraph_index);
+				if( paragraph.length() <= 0){
+					continue;
+				}
 				charAtText = paragraph.charAt(index);
 				// 必须转化为string才能找到
 				StringAtText = "" + charAtText;
 				if (sim_found_table.containsKey(StringAtText)) {
 					//迭代Errors看是否有重复
-					repeat = isRepeated(errors, signs, index, paragraph_index,repeat);
+					repeat = isRepeated(errors, index, paragraph_index,repeat);
 					//若重复则跳出重来
 					if(repeat == true){
-						paragraph_index = getRondParagraphIndex(corpus_bfs);
-						index = getRondIndex(corpus_bfs,paragraph_index);
 						continue;
 					}
 					//System.out.println("find a err position! :" + index);
@@ -66,8 +66,7 @@ public class SimiliarError extends Error {
 				}
 				index += 1;
 				if (index >= paragraph.length()){
-					paragraph_index = getRondParagraphIndex(corpus_bfs);
-					index = getRondIndex(corpus_bfs, paragraph_index);
+					continue;
 				}
 			}
 			// 否则进行替换 st_index:储存表的索引
@@ -119,7 +118,7 @@ public class SimiliarError extends Error {
 				String line = null;
 				int index = 0;
 				while ((line = fin.readLine()) != null) {
-					String str[] = line.split(" ");
+					String str[] = line.split("\\s+");
 					ArrayList<String> similar = new ArrayList<String>();
 					for (String s : str) {
 						// 查看是否含有这个字，如果没有添加，如果有就将index组合：组合形式 index1|index2
