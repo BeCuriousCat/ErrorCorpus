@@ -60,6 +60,7 @@ public class Corpus {
 					StringBuffer bf = new StringBuffer();
 					bf.append(tempString);
 					System.out.println("╤амЙндуб");
+				}
 			}else{
 				int line_count = 0;
 				while ((tempString = in.readLine()) != null) {
