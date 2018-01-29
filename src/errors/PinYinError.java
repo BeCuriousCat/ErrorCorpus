@@ -57,6 +57,9 @@ public class PinYinError extends Error {
 		for (int i = 0; i < getError_size(); i++) {
 			//随机索引
 			paragraph_index = getRondParagraphIndex(corpus_bfs);
+			if( corpus_bfs.get(paragraph_index).length() == 0){
+				paragraph_index = getRondParagraphIndex(corpus_bfs);
+			}
 			index = getRondIndex(corpus_bfs, paragraph_index);
 			while(true){
 				paragraph = corpus_bfs.get(paragraph_index);
@@ -75,6 +78,9 @@ public class PinYinError extends Error {
 					if(!map.containsKey(pinyin[0])){
 						//随机索引
 						paragraph_index = getRondParagraphIndex(corpus_bfs);
+						if( corpus_bfs.get(paragraph_index).length() == 0){
+							paragraph_index = getRondParagraphIndex(corpus_bfs);
+						}
 						index = getRondIndex(corpus_bfs, paragraph_index);
 						continue;
 					}else{
@@ -82,6 +88,9 @@ public class PinYinError extends Error {
 						if(repeat){
 							//随机索引
 							paragraph_index = getRondParagraphIndex(corpus_bfs);
+							if( corpus_bfs.get(paragraph_index).length() == 0){
+								paragraph_index = getRondParagraphIndex(corpus_bfs);
+							}
 							index = getRondIndex(corpus_bfs, paragraph_index);
 							continue;
 						}
@@ -92,6 +101,9 @@ public class PinYinError extends Error {
 						if(max <= 1){
 							//随机索引
 							paragraph_index = getRondParagraphIndex(corpus_bfs);
+							if( corpus_bfs.get(paragraph_index).length() == 0){
+								paragraph_index = getRondParagraphIndex(corpus_bfs);
+							}
 							index = getRondIndex(corpus_bfs, paragraph_index);
 							continue;
 						}
