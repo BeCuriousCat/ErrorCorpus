@@ -59,7 +59,6 @@ public class GeneratePY2HanZiLib {
 
 					if (map.containsKey(m.group(1))) {
 						map.get(m.group(1)).add(str[0].charAt(i));
-						//System.out.println(m.group(1) + " " + str[0].charAt(i));
 					} else {
 						HashSet<Character> set = new HashSet<Character>();
 						set.add(str[0].charAt(i));
