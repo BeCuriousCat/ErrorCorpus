@@ -1,10 +1,7 @@
 import java.io.IOException;
 
+import corpus.Corpus;
 import errors.Error;
-import errors.PinYinError;
-import errors.EasyWrongWords;
-import errors.NumbersError;
-import errors.PunctuationError;
 import errors.PinYinError;
 import errors.SimiliarError;
 
