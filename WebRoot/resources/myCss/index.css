@@ -1,0 +1,13 @@
+/*全局样式*/
+body {
+  padding-top: 50px;
+  margin: 0 auto;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.padding{
+	padding-top:20px;
+}
