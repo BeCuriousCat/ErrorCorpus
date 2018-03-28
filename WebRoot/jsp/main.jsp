@@ -27,7 +27,6 @@
 
 
 <!-- Custom styles for this template -->
-<link href="starter-template.css" rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -63,50 +62,64 @@
 
 	<div class="container">
 		<div class="col-sm-12 padding">
-			<h1>属性选择</h1>
+			<h3>属性选择</h3>
 			<p>按照需求进行选择添加错误种类和错误数量</p>
-			<hr>
+			
 		</div>
 
-		<form class="form-signin col-mx-12 col-sm-10">
-			<h2 class="form-signin-heading">请选择</h2>
-			<ul class="list-group ">
-				<li class="list-group-item form-inline">
-					<div class="row">
-						<label for="inputErrorType" class="sr-only">请选择错误类型</label> <select
-							id="inputErrorType" class="form-control left-padding"
-							title="错误类型">
-							<option>错误类型</option>
-							<option>易错词错误</option>
-							<option>形似词错误</option>
-							<option>音近字错误</option>
-							<option>标点错误</option>
-							<option>数字错误</option>
-						</select>
-						<div class="col-lg-3">
+		<form class="form-signin col-mx-12 col-sm-10" action="/url.do" method="post">
+			<hr>
+			<ul class="list-group">
+				<li class="list-group-item form-inline" id="err">
+					<div class="row" >
+						<div  class="col-lg-2 col-sm-6 Etype " style="height: 44px">
+							<label for="inputErrorType" class="sr-only ">请选择错误类型</label> 
+							<select id="inputErrorType" class="form-control left-padding disabled" title="错误类型">
+								<option value = "">错误类型</option>
+								<option value = "commom">易错词错误</option>
+								<option value = "Similiar">形似词错误</option>
+								<option value = "soundSimiliar">音近字错误</option>
+								<option value = "punctuation">标点错误</option>
+								<option value = "number">数字错误</option>
+							</select>
+						</div>
+						<div class="col-lg-2 col-sm-6 Enumber" ><b>请输入错误数量:</b></div>
+						<div class="col-lg-3 col-sm-6" id="inputErrorNumber">
+							<div class="input-group" >
+								<span class="input-group-addon"> 
+								<input type="radio" onclick="disTxt(this)" name = "errorNumber" value="number"></span>
+								<input type="text" name="errTxt_nubmer"  class="form-control" disabled>
+								<div class="input-group-addon">个</div>
+							</div>
+							<!-- /input-group -->
+						</div>
+						<div class="col-lg-1 or">
+							<b>or</b>
+							<!-- /input-group -->
+						</div>
+						<!-- /.col-lg-6 -->
+						<div class="col-lg-3 col-sm-6">
 							<div class="input-group">
-								<span class="input-group-addon"> <input type="radio"></span>
-								<input type="text" class="form-control">
+								<span class="input-group-addon"> 
+								<input type="radio" onclick="disTxt(this)" name ="errorNumber" value="percent"></span>
+								<input type="text" name="errTxt_percent"  class="form-control" disabled>
+								<div class="input-group-addon">%</div>
 							</div>
 							<!-- /input-group -->
 						</div>
 						<!-- /.col-lg-6 -->
-						<div class="col-lg-3">
-							<div class="input-group">
-								<span class="input-group-addon"> <input type="radio"></span>
-								<input type="text" class="form-control">
-							</div>
-							<!-- /input-group -->
+						
+						<div class="col-lg-1 add" >
+							<img src="<%=basePath %>/resources/img/mult.svg" class="img-responsive">
 						</div>
-						<!-- /.col-lg-6 -->
 					</div>
 				</li>
 			</ul>
 
 
+
 			<hr>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-				in</button>
+			<button class="btn btn-lg btn-primary" type="submit">提交</button>
 		</form>
 
 
@@ -119,15 +132,115 @@
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-	<script>
-		window.jQuery
-				|| document
-						.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
-	</script>
 	<script
 		src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-
+	<script type="text/javascript">
+		function disTxt(object){
+			
+				var InputName = $(object).attr("name");
+				$("input[name="+InputName+"]").parents().next("input").attr("disabled","disabled");
+				$("input[name="+InputName+"]:checked").parents().next("input").removeAttr("disabled")
+			};
+			
+		function checkNum(){
+			var num = $(this).val();
+			var ival = parseInt(num);
+			if(isNaN(ival)){
+				alert("请输入数字，请勿输入其他符号!")
+				$(this).val("");
+			}else{
+				if(ival < 0){
+					alert("请输入大于0的数字！")
+					$(this).val("");
+				}				
+			}
+		};
+			
+		function checkPercent(){
+			var num = $(this).val();
+			var ival = parseFloat(num);
+			if(isNaN(ival)){
+				alert("请输入数字，请勿输入其他符号!")
+				$(this).val("");
+			}else{
+				if(ival<=0 || ival >=100){
+					alert("请输入0到100之间的数字！")
+					$(this).val("");
+				}				
+			}
+		}
+		
+		function delli(){
+			var id = $(this).attr("class");
+			$("li[id="+id+"]").remove();
+		}
+		
+		$().ready(function(){
+			var clickCount = 0;
+			
+			$("div.add").click(function(){
+				var htmladd="";
+				clickCount +=1;
+		        htmladd +='<li class="list-group-item form-inline" id="err'+clickCount+'">';
+		        htmladd +='<div class="row" >';
+				htmladd +='<div class="col-lg-2 col-sm-6 Etype" style="height: 44px">';		
+				htmladd +='<label for="inputErrorType" class="sr-only ">请选择错误类型</label>';
+				htmladd +='<select id="inputErrorType" class="form-control left-padding" title="错误类型">';			
+				htmladd +='<option value = "">错误类型</option>';				
+				htmladd +='<option value = "commom">易错词错误</option>';					
+				htmladd +='<option value = "Similiar">形似词错误</option>';						
+				htmladd +='<option value = "soundSimiliar">音近字错误</option>';				
+				htmladd +='<option value = "punctuation">标点错误</option>';					
+				htmladd +='<option value = "number">数字错误</option>';
+				htmladd +='</select>';	
+				htmladd +='</div>';						
+				htmladd +='<div class="col-lg-2 col-sm-6 Enumber" ><b>请输入错误数量:</b></div>';											
+				htmladd +='<div class="col-lg-3 col-sm-6" id="inputErrorNumber">';					
+				htmladd +='<div class="input-group">';						
+				htmladd +='<span class="input-group-addon">';						
+				htmladd +='<input type="radio" onclick="disTxt(this)" name = "errorNumber'+clickCount+'"  value="number" ></span>';	
+				htmladd +='<input type="text" name="errTxt_nubmer" class="form-control" disabled>';						
+				htmladd +='<div class="input-group-addon">个</div>';					
+				htmladd +='</div>';	
+				htmladd +='<!-- /input-group -->';				
+				htmladd +='</div>';				
+				htmladd +='<div class="col-lg-1 or">';				
+				htmladd +='<b>or</b>';					
+				htmladd +='<!-- /input-group -->';						 
+				htmladd +='</div>';						
+				htmladd +='<!-- /.col-lg-6 -->';						
+				htmladd +='<div class="col-lg-3 col-sm-6">';						
+				htmladd +='<div class="input-group">';				
+				htmladd +='<span class="input-group-addon"> ';				
+				htmladd +='<input type="radio" onclick="disTxt(this)" name ="errorNumber'+clickCount+'"  value="percent" ></span> ';			
+				htmladd +='<input type="text" name = "errTxt_percent" class="form-control" disabled>';			
+				htmladd +='<div class="input-group-addon">%</div>';				
+				htmladd +='</div>';				
+				htmladd +='<!-- /input-group -->';				
+				htmladd +='</div>';				
+				htmladd +='<!-- /.col-lg-6 -->';				
+			
+				//添加删除按钮
+				htmladd +='<div class="col-lg-1 del" >';
+				htmladd +='<img style="width:80%;margin: 0 auto;"  class = "err'+clickCount+'" src="<%=basePath %>/resources/img/del2.svg" class="img-responsive">';
+				htmladd +='</div>';	
+				htmladd +='</div>';					
+				htmladd +='</li>';
+				
+				
+				
+				$("ul.list-group").append(htmladd);
+				$("input[name='errTxt_nubmer']").bind("blur",checkNum);
+				$("input[name='errTxt_percent']").bind("blur",checkPercent);
+				$("img[class^='err']").bind("click",delli);
+				
+			})
+			
+			$("input[name='errTxt_nubmer']").blur(checkNum);
+			$("input[name='errTxt_percent']").blur(checkPercent);
+		})
+	</script>
 </body>
 </html>
 

@@ -1,9 +1,48 @@
 .left-padding{
 	padding-left: 15px;
 }
-.checkboxs{
-	margin:10px;
+
+.Enumber {
+	text-align:center;
+	font-size:16px;
+	line-height:44px;
+	border-left:1px solid #ccc;
+	border-left-radius: 0.3em;
+	height:44px;
 }
+
+.Etype {
+	height:44px;
+}
+
+div.or {
+	width: 50px;
+	height: 44px;
+	font-size:16px;
+	line-height: 44px;
+	text-align: center;
+}
+
+div.add {
+	float: right;
+	cursor: pointer;
+	
+}
+
+div.del {
+	float: right;
+	cursor: pointer;
+	
+}
+
+input {
+	text-align: center;
+}
+
+.form-signin button[type="submit"] {
+	float: right;
+}
+
 .form-signin {
   padding: 15px;
   -webkit-box-orient: horizontal;
