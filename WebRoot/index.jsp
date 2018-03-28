@@ -73,7 +73,7 @@
 				</p>
 				<div class="jumbotron" style="text-align: center;">
 					<h1 style="margin-top: -10px;">ErrorCorpus Introduce</h1>
-					<p style="text-align: left;text-indent:2em">&nbsp;这是一个用于生产错误语料的工具，通过错词词典将原本正确的语料中的易错部分替换成错词，并用Json记录其错误类型和位置。</p>
+					<p class="lead" style="text-align: left;text-indent:2em">&nbsp;这是一个用于生产错误语料的工具，通过错词词典将原本正确的语料中的易错部分替换成错词，并用Json记录其错误类型和位置。</p>
 					<p style="padding-top: 15px">
 						<a href="<%=basePath %>jsp/main.jsp" class="btn btn-primary btn-lg" style="width:30%" >前往生成 </a>
 					</p>

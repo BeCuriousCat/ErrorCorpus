@@ -67,14 +67,14 @@
 			
 		</div>
 
-		<form class="form-signin col-mx-12 col-sm-10" action="/url.do" method="post">
+		<form class="form-signin col-mx-12 col-sm-10" action="${basePath }generate!generate" method="post">
 			<hr>
 			<ul class="list-group">
 				<li class="list-group-item form-inline" id="err">
 					<div class="row" >
 						<div  class="col-lg-2 col-sm-6 Etype " style="height: 44px">
 							<label for="inputErrorType" class="sr-only ">请选择错误类型</label> 
-							<select id="inputErrorType" class="form-control left-padding disabled" title="错误类型">
+							<select id="inputErrorType" name="inputErrorType" class="form-control left-padding disabled" title="错误类型">
 								<option value = "">错误类型</option>
 								<option value = "commom">易错词错误</option>
 								<option value = "Similiar">形似词错误</option>
@@ -88,7 +88,7 @@
 							<div class="input-group" >
 								<span class="input-group-addon"> 
 								<input type="radio" onclick="disTxt(this)" name = "errorNumber" value="number"></span>
-								<input type="text" name="errTxt_nubmer"  class="form-control" disabled>
+								<input type="text" name="errTxt_number"  class="form-control" disabled>
 								<div class="input-group-addon">个</div>
 							</div>
 							<!-- /input-group -->
@@ -200,7 +200,7 @@
 				htmladd +='<div class="input-group">';						
 				htmladd +='<span class="input-group-addon">';						
 				htmladd +='<input type="radio" onclick="disTxt(this)" name = "errorNumber'+clickCount+'"  value="number" ></span>';	
-				htmladd +='<input type="text" name="errTxt_nubmer" class="form-control" disabled>';						
+				htmladd +='<input type="text" name="errTxt_number" class="form-control" disabled>';						
 				htmladd +='<div class="input-group-addon">个</div>';					
 				htmladd +='</div>';	
 				htmladd +='<!-- /input-group -->';				
@@ -231,13 +231,13 @@
 				
 				
 				$("ul.list-group").append(htmladd);
-				$("input[name='errTxt_nubmer']").bind("blur",checkNum);
+				$("input[name='errTxt_number']").bind("blur",checkNum);
 				$("input[name='errTxt_percent']").bind("blur",checkPercent);
 				$("img[class^='err']").bind("click",delli);
 				
 			})
 			
-			$("input[name='errTxt_nubmer']").blur(checkNum);
+			$("input[name='errTxt_number']").blur(checkNum);
 			$("input[name='errTxt_percent']").blur(checkPercent);
 		})
 	</script>

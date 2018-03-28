@@ -2,8 +2,11 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
     <!-- struts2的action必须放在一个指定的包空间下定义 -->
-    <package name="default" extends="struts-default">
+    <package name="default" namespace="/" extends="struts-default">
     <!-- 定义处理请求URL为login.action的Action -->
-       
+       <action name="generate!*" class="action.GenerateCorpusAction" method="{1}">
+       		<result name="success">/result.jsp</result>
+       		<result name="error">/error.jsp</result>
+       </action>
     </package>
 </struts>    
