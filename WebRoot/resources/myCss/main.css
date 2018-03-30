@@ -23,6 +23,9 @@ div.or {
 	text-align: center;
 }
 
+.filebtn {
+	margin:20px, auto; 
+}
 div.add {
 	float: right;
 	cursor: pointer;

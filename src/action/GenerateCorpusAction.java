@@ -7,27 +7,36 @@ import javax.ws.rs.core.Request;
 import org.apache.struts2.ServletActionContext;
 
 public class GenerateCorpusAction {
-	public String generate(){
-
+	public String generate() {
+		//获取request
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
-		
-		String errType = request.getParameter("inputErrorType");
-		String errNum = request.getParameter("errorNumber");
-		Integer num = getErrorNumber(errNum,request); 
-		
-		
-		
+		//获取错误类型数组
+		String[] errType = request.getParameterValues("inputErrorType");
+		//获取错误数量设置方式
+		String[] errNum = getRadioNum(request,errType.length);
+		//获取错误数量
+		int[] num = getErrorNumber(errNum, request);
+
+		for (int i = 0; i < num.length; i++) {
+			System.out.println(errType[i]);
+			System.out.println(errNum[i]);
+		}
+
 		return "success";
 	}
 
-	private Integer getErrorNumber(String errNum, HttpServletRequest request) {
-		if( errNum.equals("number")){
-			return Integer.parseInt(request.getParameter("errTxt_number"));
-		}else if(errNum.equals("precent")){
-			return Integer.parseInt(request.getParameter("errTxt_precent"));
+	private String[] getRadioNum(HttpServletRequest request, int len) {
+		String[] errNum = new String[len];
+		for (int i = 0; i < errNum.length; i++) {
+			errNum[i] = request.getParameter("errorNumber"+i);
 		}
+		return errNum;
+	}
+
+	private int[] getErrorNumber(String[] errNum, HttpServletRequest request) {
+		int[] num = new int[errNum.length];
 		
-		return -1;
+		return num;
 	}
 }
