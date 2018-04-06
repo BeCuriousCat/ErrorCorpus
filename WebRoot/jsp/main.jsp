@@ -60,53 +60,28 @@
 	</nav>
 
 	<div class="container">
-		<div class="row col-sm-12 padding">
-			<h3 class="col-sm-6 col-lg-4">选择需要上传的原始语料文件：</h3>
-			
-			
-			<button type="button" class="btn btn-primary col-sm-4 col-lg-3 " style="margin: 15px auto; " data-toggle="modal" data-target="#exampleModal">选择文件</button>
-			<div class="col-sm-2 col-lg-2">${message}</div>
-			<!-- Modal -->
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">文件上传</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="file-loading">
-								<input id="input-b9" name="upload" multiple type="file">
-							</div>
-							
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">关闭</button>
-						</div>
-					</div>
+		<!-- Modal -->
+		<div class="col-sm-12" style="padding-top: 20px;padding-left: 0px;">
+			<h3 class="col-sm-5 col-lg-4">选择需要上传的原始语料文件：</h3>
+			<div class="col-sm-6 col-lg-6" style="padding: 18px 0 8px 0">
+				<div class="file-loading">
+					<input id="input-b9" name="upload" multiple type="file">
 				</div>
 			</div>
+			
 		</div>
-		
 		<div class="col-sm-12 padding">
 			<h3>属性选择</h3>
 			<p>按照需求进行选择添加错误种类和错误数量</p>
-			
 		</div>
-
-		<form class="form-signin col-mx-12 col-sm-12" action="${basePath }generate!generate" method="post">
-			<hr>
+		<hr>
+		<form class="form-signin col-mx-10 col-sm-10"  action="generate" method="post">
 			<ul class="list-group">
 				<li class="list-group-item form-inline" id="err">
 					<div class="row" >
 						<div  class="col-lg-2 col-sm-6 Etype " style="height: 44px">
 							<label for="inputErrorType" class="sr-only ">请选择错误类型</label> 
-							<select  name="inputErrorType" class="form-control left-padding disabled" title="错误类型">
+							<select  name="inputErrorType" class="form-control left-padding" title="错误类型">
 								<option value = "">错误类型</option>
 								<option value = "commom">易错词错误</option>
 								<option value = "Similiar">形似词错误</option>
@@ -119,8 +94,8 @@
 						<div class="col-lg-3 col-sm-6" id="inputErrorNumber">
 							<div class="input-group" >
 								<span class="input-group-addon"> 
-								<input type="radio" onclick="disTxt(this)" name = "errorNumber0" value="number"></span>
-								<input type="text" name="errTxt_number"  class="form-control" disabled>
+								<input type="radio" onclick="disTxt(this)" name = "errorNumber0" value="number0"></span>
+								<input type="text" name="errTxt_number0"  class="form-control" disabled>
 								<div class="input-group-addon">个</div>
 							</div>
 							<!-- /input-group -->
@@ -133,8 +108,8 @@
 						<div class="col-lg-3 col-sm-6">
 							<div class="input-group">
 								<span class="input-group-addon"> 
-								<input type="radio" onclick="disTxt(this)" name ="errorNumber0" value="percent"></span>
-								<input type="text" name="errTxt_percent"  class="form-control" disabled>
+								<input type="radio" onclick="disTxt(this)" name ="errorNumber0" value="percent0"></span>
+								<input type="text" name="errTxt_percent0"  class="form-control" disabled>
 								<div class="input-group-addon">%</div>
 							</div>
 							<!-- /input-group -->
@@ -142,7 +117,7 @@
 						<!-- /.col-lg-6 -->
 						
 						<div class="col-lg-1 add" >
-							<img src="<%=basePath %>/resources/img/mult.svg" class="img-responsive">
+							<img src="<%=basePath %>/resources/img/mult.svg" class="img-responsive" style="height: 44px;">
 						</div>
 					</div>
 				</li>
@@ -169,6 +144,7 @@
 	
 	<!--  bootstrap fileinput-->
 	<link href="<%=basePath %>resources/bootrap-fileinput/css/fileinput.css" rel="stylesheet">
+	
 	<script type="text/javascript" src="<%=basePath %>resources/bootrap-fileinput/js/fileinput.js"></script>
 	<script type="text/javascript" src="<%=basePath %>resources/bootrap-fileinput/js/locales/zh.js"></script>
 	
@@ -182,20 +158,31 @@
 				showUpload : true,
 				uploadsync: true,
 				allowedFileExtensions : ["txt"],
-				uploadUrl: 'uploadAction',
+				uploadUrl: 'upload',
 				enctype: 'multipart/form-data'
 			})
 		});
 	</script>
 	<script type="text/javascript">
+		var selected =[]; 
+		var options = {"commom":"易错词错误","Similiar":"形似词错误","soundSimiliar":"音近字错误","punctuation":"标点错误","number":"数字错误"};
+		
 		function disTxt(object){
 				var InputName = $(object).attr("name");
 				$("input[name="+InputName+"]").parents().next("input").attr("disabled","disabled");
-				console.log(selectValue(object));
 				if( selectValue(object) == 1 ){
 					$("input[name="+InputName+"]:checked").parents().next("input").removeAttr("disabled")
 				}
+				
+				// 使得点击radio时，同时改变input的name，使得其唯一
+				chgInput(object);
 			};
+		function chgInput(obj){
+			var val = $(obj).val();
+			var input = $(obj).parent().parent().children("input[type='text']");
+			$(input).attr("name",val);
+			console.log($(input).attr("name"));
+		}	
 			
 		function checkNum(){
 			var num = $(this).val();
@@ -231,7 +218,7 @@
 				$(this).attr("checked",false);
 			}
 		}
-		
+		//select是否选中值
 		function selectValue(obj){
 			var val = $(obj).parents("div.row").find("div.Etype > select").val();
 			if( val == "")
@@ -240,14 +227,63 @@
 				return 1;
 		}
 		function delli(){
+			//如果li的数量小于5个就显示添加按钮
+			var list = $("select[name='inputErrorType']");
+			if( list.length < 5){
+				$("div.col-lg-1.add").show();
+			}
+		
 			var id = $(this).attr("class");
 			$("li[id="+id+"]").remove();
 		}
 		
+		
+		function selectOnce(){
+			var list = $("select[name='inputErrorType']");
+			selected.splice(0, selected.length);	
+			flash();
+		}
+		
+		function flash(){
+			var list = $("select[name='inputErrorType']");
+			for(var i=0;i<list.length;i++ ){
+				var key =  $(list[i]).val();
+				selected.push(key);
+			}
+			
+			$("select > option").show();
+			for(var i=0;i<selected.length;i++){
+				$("option[value='"+selected[i]+"']").hide();
+			}
+			$("option[value='']").show();
+		}
+		
+		function checkLiNum(){
+			var list = $("li[id^=err]");
+			console.log(list.length);
+			if( list.length > 4){
+				$("div.col-lg-1.add").hide();
+			}
+		}
+		
+		function unquice(){
+			var val = $(this).val();
+			var row = $(this).parents("div.row");
+			var radio = $(row).find("input[type='radio']");
+			var rad_num = $(row).find("input[value^='number']");
+			var rad_pre = $(row).find("input[value^='percent']");
+			//更改radio选项的name和value
+			$(radio).attr("name",val);
+			$(rad_num).val("number_"+val);
+			$(rad_pre).val("percent_"+val);
+	
+		}
+
 		$().ready(function(){
 			var clickCount = 0;
 			
 			$("div.add").click(function(){
+
 				var htmladd="";
 				clickCount +=1;
 		        htmladd +='<li class="list-group-item form-inline" id="err'+clickCount+'">';
@@ -256,19 +292,21 @@
 				htmladd +='<label for="inputErrorType" class="sr-only ">请选择错误类型</label>';
 				htmladd +='<select name="inputErrorType" class="form-control left-padding" title="错误类型">';			
 				htmladd +='<option value = "">错误类型</option>';				
-				htmladd +='<option value = "commom">易错词错误</option>';					
-				htmladd +='<option value = "Similiar">形似词错误</option>';						
-				htmladd +='<option value = "soundSimiliar">音近字错误</option>';				
-				htmladd +='<option value = "punctuation">标点错误</option>';					
-				htmladd +='<option value = "number">数字错误</option>';
+				
+				for( var key in options){
+					if($.inArray(key,selected) == -1){
+						htmladd +='<option value = "'+key+'">'+options[key]+'</option>';
+					}	
+				}
+				
 				htmladd +='</select>';	
 				htmladd +='</div>';						
 				htmladd +='<div class="col-lg-2 col-sm-6 Enumber" ><b>请输入错误数量:</b></div>';											
 				htmladd +='<div class="col-lg-3 col-sm-6" id="inputErrorNumber">';					
 				htmladd +='<div class="input-group">';						
 				htmladd +='<span class="input-group-addon">';						
-				htmladd +='<input type="radio" onclick="disTxt(this)" name = "errorNumber'+clickCount+'"  value="number" ></span>';	
-				htmladd +='<input type="text" name="errTxt_number" class="form-control" disabled>';						
+				htmladd +='<input type="radio" onclick="disTxt(this)" name = "errorNumber'+clickCount+'"  value="number'+clickCount+'" ></span>';	
+				htmladd +='<input type="text" name="errTxt_number'+clickCount+'" class="form-control" disabled>';						
 				htmladd +='<div class="input-group-addon">个</div>';					
 				htmladd +='</div>';	
 				htmladd +='<!-- /input-group -->';				
@@ -281,8 +319,8 @@
 				htmladd +='<div class="col-lg-3 col-sm-6">';						
 				htmladd +='<div class="input-group">';				
 				htmladd +='<span class="input-group-addon"> ';				
-				htmladd +='<input type="radio" onclick="disTxt(this)" name ="errorNumber'+clickCount+'"  value="percent" ></span> ';			
-				htmladd +='<input type="text" name = "errTxt_percent" class="form-control" disabled>';			
+				htmladd +='<input type="radio" onclick="disTxt(this)" name ="errorNumber'+clickCount+'"  value="percent'+clickCount+'" ></span> ';			
+				htmladd +='<input type="text" name = "errTxt_percent'+clickCount+'" class="form-control" disabled>';			
 				htmladd +='<div class="input-group-addon">%</div>';				
 				htmladd +='</div>';				
 				htmladd +='<!-- /input-group -->';				
@@ -291,7 +329,7 @@
 			
 				//添加删除按钮
 				htmladd +='<div class="col-lg-1 del" >';
-				htmladd +='<img style="width:80%;margin: 0 auto;"  class = "err'+clickCount+'" src="<%=basePath %>/resources/img/del2.svg" class="img-responsive">';
+				htmladd +='<img style="height: 35px;"  class = "err'+clickCount+'" src="<%=basePath %>/resources/img/del2.svg" class="img-responsive">';
 				htmladd +='</div>';	
 				htmladd +='</div>';					
 				htmladd +='</li>';
@@ -299,15 +337,21 @@
 				
 				
 				$("ul.list-group").append(htmladd);
-				$("input[name='errTxt_number']").bind("blur",checkNum);
-				$("input[name='errTxt_percent']").bind("blur",checkPercent);
+				//约束错误li数量不超过5个
+				checkLiNum();
+				
+				$("input[name^='errTxt_number']").bind("blur",checkNum);
+				$("input[name^='errTxt_percent']").bind("blur",checkPercent);
 				$("img[class^='err']").bind("click",delli);
 				$("input[type='radio']").bind("click",checkSelect);
+				$("select[name='inputErrorType']").bind("click",selectOnce);
+				$("select[name='inputErrorType']").bind("click",unquice);
 			})
 			
-			$("input[name='errTxt_number']").blur(checkNum);
-			$("input[name='errTxt_percent']").blur(checkPercent);
+			$("input[name^='errTxt_number']").blur(checkNum);
+			$("input[name^='errTxt_percent']").blur(checkPercent);
 			$("input[type='radio']").bind("click",checkSelect);
+			$("select[name='inputErrorType']").bind("click",unquice);
 		})
 	</script>
 </body>

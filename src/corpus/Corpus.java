@@ -25,7 +25,11 @@ public class Corpus {
 	private ArrayList<Error> errors = null;
 	private double error_rate = 0;
 	private int errs_number = 0;
-
+	/***
+	 * 
+	 * @param path
+	 * @param corpus_size 若设置的corpus size小于0或者大于文本大小则设置成文本大小
+	 */
 	public Corpus(String path, int corpus_size) {
 		super();
 		this.corpus_size = corpus_size;
@@ -60,8 +64,8 @@ public class Corpus {
 				while ((tempString = in.readLine()) != null) {
 					StringBuffer bf = new StringBuffer();
 					bf.append(tempString);
-					System.out.println("读完文章");
 				}
+				System.out.println("读取全文本");
 			}else{
 				int line_count = 0;
 				while ((tempString = in.readLine()) != null) {
@@ -85,7 +89,7 @@ public class Corpus {
 				count +=bf.length(); 
 			}
 			if(this.corpus_size<=0){
-				System.out.println("读取全文本");
+				System.out.println("读取全文本"+count);
 				this.corpus_size = count;
 			}
 

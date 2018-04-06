@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<constant name="struts.multipart.saveDir" value="/tmp"/>
+	<constant name="struts.multipart.saveDir" value="/tmp" />
 	<!-- 热部署: 开发中如果改变了配置文件, Struts2 自动将自动重新加载 -->
 	<constant name="struts.configuration.xml.reload" value="true" />
-    <!-- struts2的action必须放在一个指定的包空间下定义 -->
-    <package name="default" namespace="/" extends="struts-default">
-    
-    <!-- 定义处理请求URL为login.action的Action -->
-       <action name="generate!*" class="action.GenerateCorpusAction" method="{1}">
-       		<result name="success">/jsp/result.jsp</result>
-       		<result name="error">/error.jsp</result>
-       </action>
-        <action name="uploadAction" class="action.FileUploadAction" method="upload">
-            <result name="success" >/index.jsp</result>
-            <result name="input">/jsp/main.jsp</result>
-            <!-- 动态设置savePath的属性值 -->
-            <interceptor-ref name="fileUpload">
-                <!-- 文件过滤 -->
-                <param name="allowedTypes">text/plain</param>
-                <!-- 文件大小, 以字节为单位 -->
-                <param name="maximumSize">1025956</param>
-            </interceptor-ref>
-            <!-- 默认拦截器必须放在fileUpload之后，否则无效 -->
-            <interceptor-ref name="defaultStack" />
-        </action>
-
-    </package>
+	<constant name="struts.multipart.maxSize" value="11259560"/>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 设置Struts2应用是否处于开发模式，通常在开发调试阶段设为true,正式上线后可设为false -->
+	<constant name="struts.devMode" value="true" />
+	<!-- struts2的action必须放在一个指定的包空间下定义 -->
+	<package name="default" namespace="/" extends="struts-default">
+		<!-- 定义处理请求URL为generate.action的Action -->
+		<action name="generate" class="com.errorcorpus.action.GenerateCorpusAction" method="generate">
+			<result name="success">/jsp/main.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		<action name="upload" class="com.errorcorpus.action.FileUploadAction" method="upload">
+			<result name="success">index.jsp</result>
+			<result name="input">/jsp/main.jsp</result>
+			<!-- 动态设置savePath的属性值 -->
+			<interceptor-ref name="fileUpload">
+				<!-- 文件过滤 -->
+				<param name="allowedTypes">text/plain</param>
+				<!-- 文件大小, 以字节为单位 -->
+				<param name="maximumSize">10259560</param>
+			</interceptor-ref>
+			<!-- 默认拦截器必须放在fileUpload之后，否则无效 -->
+			<interceptor-ref name="defaultStack" />
+		</action>
+	</package>
 </struts>    

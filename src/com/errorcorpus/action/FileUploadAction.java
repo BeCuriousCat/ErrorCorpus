@@ -1,4 +1,4 @@
-package action;
+package com.errorcorpus.action;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +23,6 @@ public class FileUploadAction extends ActionSupport{
 	    private String uploadFileName; //ÎÄ¼þÃû³Æ
 	    private String uploadContentType; 
 	    
-	    
-
-
 
 		public String upload()  {
 	        String realpath = ServletActionContext.getServletContext().getRealPath("/txtCorpus");

@@ -9,8 +9,11 @@ import java.util.HashMap;
 
 public class SimiliarError extends Error {
 	// 形近词表
-	private static String sim_corpus_path = System.getProperty("user.dir")
-			+ "\\corpusLib\\形近字表.txt";
+	// api 使用相对路径
+	//private static String sim_corpus_path = System.getProperty("user.dir") + "\\corpusLib\\形近字表.txt";
+	// Web 路径
+	private static String sim_corpus_path = System.getProperty("user.dir") + "\\corpusLib\\形近字表.txt";
+	
 	// 因为需要多次迭代形近词表，所以将其长期放入内存中
 	// 构建一个hashmap作为查找表，K：字，V：存储的数组的索引
 	private static HashMap<String, String> sim_found_table = null;
