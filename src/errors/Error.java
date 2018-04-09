@@ -43,7 +43,7 @@ public abstract class Error {
 		this.error_rate = error_rate;
 	}
 
-	public ArrayList<Sign> sign() {
+	public ArrayList<Sign> getSign() {
 		return signs;
 	}
 

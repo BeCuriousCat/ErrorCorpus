@@ -3,10 +3,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -191,8 +193,7 @@ public class Corpus {
 		String confpath = path + filename + "_conf.txt";
 		File file = new File(filepath);
 		File conf_file = new File(confpath);
-		FileWriter fw = null;
-		FileWriter conf_fw = null;
+		BufferedWriter conf_bw = null;
 		BufferedWriter bw = null;
 
 		System.out.println(filepath);
@@ -200,17 +201,18 @@ public class Corpus {
 		try {
 			file.createNewFile();
 			System.out.println("success create file,the file is " + filepath);
-			fw = new FileWriter(file);
-			bw = new BufferedWriter(fw);
+			
+			bw = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (file),"UTF-8"));
 			for (StringBuffer sb : text) {
 				bw.write(sb.toString());
 				bw.newLine();
 			}
-			fw.flush();
+			bw.flush();
 
 			conf_file.createNewFile();
 			System.out.println("success create file,the file is " + confpath);
-			conf_fw = new FileWriter(conf_file);
+			conf_bw = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (conf_file),"UTF-8"));
+			
 			String content = "";
 			String enter = "\n";
 			String header = "";
@@ -237,16 +239,15 @@ public class Corpus {
 			}
 			
 			// Êä³ö
-			conf_fw.write(content, 0, content.length());
-			conf_fw.flush();
+			conf_bw.write(content, 0, content.length());
+			conf_bw.flush();
 
 		} catch (Exception e) {
 			System.out.println("Error: write file error!");
 			e.printStackTrace();
 		} finally {
 			bw.close();
-			fw.close();
-			conf_fw.close();
+			conf_bw.close();
 		}
 
 	}
