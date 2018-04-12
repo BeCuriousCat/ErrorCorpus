@@ -22,8 +22,6 @@ public class SimiliarError extends Error {
 
 	public SimiliarError(String name, double rate) {
 		super(name, rate);
-		ArrayList<Sign> sign = new ArrayList<Sign>();
-		setSigns(sign);
 	}
 
 	@Override
@@ -39,7 +37,7 @@ public class SimiliarError extends Error {
 		}
 		// 添加形近词错误
 		ArrayList<Sign> signs = new ArrayList<Sign>();
-		for (int i = 0; i < this.getError_size(); i++) {
+		for (int i = 0; i < this.getErrorSize(); i++) {
 			char charAtText;
 			String StringAtText;//文本中的将被替代的一个字
 			int index;
@@ -90,7 +88,7 @@ public class SimiliarError extends Error {
 				if (charAtText != wrong_word) {
 					String correct_word = StringAtText;
 					paragraph.replace(index, index + 1, "" + wrong_word);
-					Sign sign = new Sign(paragraph_index, index, Character.toString(wrong_word), correct_word);
+					Sign sign = new Sign(paragraph_index, index, correct_word, Character.toString(wrong_word));
 					this.getSigns().add(sign);
 					break;
 				}

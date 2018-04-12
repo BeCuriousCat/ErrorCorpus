@@ -36,6 +36,12 @@ public class Sign {
 		this.correct_word = correct_word;
 		this.wrong_word = wrong_word;
 	}
+	@Override
+	public String toString() {
+		return "Sign [paragraph_index=" + paragraph_index + ", index=" + index
+				+ ", correct_word=" + correct_word + ", wrong_word="
+				+ wrong_word + "]";
+	}
 	
 	
 }

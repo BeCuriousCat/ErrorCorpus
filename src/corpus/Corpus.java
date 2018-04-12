@@ -135,13 +135,13 @@ public class Corpus {
 	public void setErrors(ArrayList<Error> errors) {
 		// 在错误传入后，根据错误比例设置好错误数量
 		for (Error err : errors) {
-			err.setError_size((int) Math.ceil(corpus_size * err.getError_rate()));
-			this.error_rate += err.getError_rate();
+			err.setErrorSizeByCorpus_size((int) Math.ceil(corpus_size * err.getErrorRate()));
+			this.error_rate += err.getErrorRate();
 		}
 		this.errors = errors;
 		try {
 			for (Error error : errors) {
-				this.errs_number += error.getError_size();
+				this.errs_number += error.getErrorSize();
 			}
 		} catch (Exception e) {
 			System.out.println("init corpus wraning: errors is null");
@@ -150,15 +150,15 @@ public class Corpus {
 
 	public void addErrors(Error err) {
 		// 在错误传入后，根据错误比例设置好错误数量
-		err.setError_size(this.corpus_size);
+		err.setErrorSizeByCorpus_size(this.corpus_size);
 		this.errors.add(err);
 		//先清零，后计算
 		this.errs_number = 0;
 		this.error_rate = 0.0;
 		try {
 			for (Error error : errors) {
-				this.errs_number += error.getError_size();
-				this.error_rate += error.getError_rate();
+				this.errs_number += error.getErrorSize();
+				this.error_rate += error.getErrorRate();
 			}
 		} catch (Exception e) {
 			System.out.println("init corpus wraning: errors is null");
@@ -175,8 +175,8 @@ public class Corpus {
 				+ "% errors number: " + errs_number + "\n";
 		for (Error error : errors) {
 			str += "error type:" + error.getName() + " rate:"
-					+ error.getError_rate() + " number:"
-					+ error.getError_size();
+					+ error.getErrorRate() + " number:"
+					+ error.getErrorSize();
 			str += "\n";
 		}
 		return str;

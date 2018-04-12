@@ -9,15 +9,13 @@ public class PunctuationError extends Error{
 	
 	public PunctuationError(String name, double rate) {
 		super(name, rate);
-		// TODO Auto-generated constructor stub
 		ArrayList<Sign> sign = new ArrayList<Sign>();
 		setSigns(sign);
 	}
 	
 	@Override
 	public boolean process(ArrayList<StringBuffer> corpus_bf, ArrayList<Error> errors) {
-		// TODO Auto-generated method stub
-		int errNum = this.getError_size();
+		int errNum = this.getErrorSize();
 		ArrayList<ArrayList<Result>> result = new NumbersAndPunctuation().getNumbers(corpus_bf, "\\p{P}");
 		
 		
@@ -38,17 +36,17 @@ public class PunctuationError extends Error{
 					Result r = result.get(para).get(num);
 					if(String.valueOf(punctuationList[n]).equals(r.getValue())&& n<punctuationList.length-1){
 						corpus_bf.get(para).replace(r.getLocation(), r.getLocation()+1, String.valueOf(punctuationList[n+1]));
-						System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(punctuationList[n+1]));
+						//System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(punctuationList[n+1]));
 						Sign sign = new Sign(para, r.getLocation(), r.getValue(), String.valueOf(punctuationList[n+1]));
 						this.getSigns().add(sign);
 					}else if(n==punctuationList.length-1){
 						corpus_bf.get(para).replace(r.getLocation(), r.getLocation()+1, String.valueOf(punctuationList[n-1]));
-						System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(punctuationList[n-1]));
+						//System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(punctuationList[n-1]));
 						Sign sign = new Sign(para, r.getLocation(), r.getValue(), String.valueOf(punctuationList[n-1]));
 						this.getSigns().add(sign);
 					}else{
 						corpus_bf.get(para).replace(r.getLocation(), r.getLocation()+1, String.valueOf(punctuationList[n]));
-						System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(punctuationList[n]));
+						//System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(punctuationList[n]));
 						Sign sign = new Sign(para, r.getLocation(), r.getValue(), String.valueOf(punctuationList[n]));
 						this.getSigns().add(sign);
 					}
@@ -65,18 +63,17 @@ public class PunctuationError extends Error{
 		}
 			
 		
-
+		/*
 		System.out.println("++++++++++++++++++++");
 		for(ArrayList<Result> res: result){
 			System.out.println(res.size());
 		}
 		System.out.println("remain"+errNum+"words didnot be generated");
-		
+		*/
 		return true;
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		ArrayList<StringBuffer> corpus_bf = new ArrayList<StringBuffer>();
 		StringBuffer s1= new StringBuffer("神烦狗,父爱.搜236发个]图分公\\司发给下");
 		StringBuffer s2= new StringBuffer("是广发、四姑;父分7噩耗");

@@ -15,5 +15,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="corpusLib/jna-4.0.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,19 +1,18 @@
 package errors;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import util.GeneratePY2HanZiLib;
 //pinyin4j entry point 
 import net.sourceforge.pinyin4j.PinyinHelper;
-
 //only when you need formating the output 
-import net.sourceforge.pinyin4j.format.*; 
-import net.sourceforge.pinyin4j.format.exception.*;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import util.GeneratePY2HanZiLib;
 
 public class PinYinError extends Error {
 
@@ -22,8 +21,6 @@ public class PinYinError extends Error {
 
 	public PinYinError(String name, double rate) {
 		super(name, rate);
-		ArrayList<Sign> sign = new ArrayList<Sign>();
-		setSigns(sign);
 	}
 
 	@Override
@@ -54,7 +51,7 @@ public class PinYinError extends Error {
 		int count = 0; //计数器，用来选择set中的随机一个字符
 		char correct_word;
 		char wrong_word = 0;
-		for (int i = 0; i < getError_size(); i++) {
+		for (int i = 0; i < getErrorSize(); i++) {
 			int loop_cnt = 0;
 			int repeat_cnt = 0;
 			while(true){
@@ -120,7 +117,7 @@ public class PinYinError extends Error {
 						index +=1;
 						System.out.println("第"+paragraph_index+"段第"+index+"处："+correct_word+"替换成"+wrong_word);
 						*/
-						Sign sign = new Sign(paragraph_index, index, Character.toString(wrong_word), Character.toString(correct_word));
+						Sign sign = new Sign(paragraph_index, index, Character.toString(correct_word), Character.toString(wrong_word));
 						signs.add(sign);
 						
 						break;

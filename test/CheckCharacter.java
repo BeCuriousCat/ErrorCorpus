@@ -27,8 +27,8 @@ public class CheckCharacter {
 
 		txt_path += "0.0005_result.txt";
 		conf_path += "0.0005_conf.txt";
-		float rate = 0.0005f;
-		for (; rate <= 0.01; rate = rate + 0.0005f) {
+		float rate = 0.01f;
+		//for (; rate <= 0.01; rate = rate + 0.0005f) {
 			
 			long sTime = System.currentTimeMillis();
 			
@@ -36,11 +36,8 @@ public class CheckCharacter {
 			String jsonStr = readFile(conf_path);
 			
 			ArrayList<SuggestResult> resluts = getResults(result);
-			String j = "{'error_rate':2.0000000949949026E-4,'error_size':4,'name':'pinyin','signs':[{'correct_word':'耀','index':41,'paragraph':10,'wrong_word':'要'},{'correct_word':'皁','index':118,'paragraph':109,'wrong_word':'文'},{'correct_word':'齁','index':4,'paragraph':39,'wrong_word':'后'},{'correct_word':'葃','index':125,'paragraph':104,'wrong_word':'做'}]}";
-			Object x = JSON.parseObject(j,Error.class);
 			ArrayList<Error> errors = (ArrayList<Error>) JSON.parseArray(jsonStr, Error.class);
-			
-			System.out.println(x.toString());
+
 			for (Error error : errors) {
 				System.out.println(error.toString());
 			}
@@ -49,28 +46,27 @@ public class CheckCharacter {
 			int suggestCorrect = 0;
 			int suggestWrong = 0;
 			for (Error error : errors) {
-				errNumber += error.getError_size();
-				for (Sign sign : error.getSign()) {
+				errNumber += error.getErrorSize();
+				for (Sign sign : error.getSigns()) {
 					for (SuggestResult reslut : resluts) {
-						//能找对位置
-						if(sign.getParagraph() == reslut.getLineNo() &&  sign.getIndex() == reslut.getBegin_index() ){
+						switch(isCharacterSame(sign, reslut)){
+						case 1: 
+							suggestCorrect++;
+							break;
+						case 0:
 							correctPosition++;
-							//能找出对的词
-							if( sign.getWrong_word().equals(reslut.getWrongWord()) && reslut.getSuggest().contains(sign.getCorrect_word())){
-								suggestCorrect+=1;
-							}else{
-								suggestWrong+=1;
-							}
+							break;
 						}
 					}
 				}
 				
 				//查错的
 				int wrong = resluts.size() - suggestCorrect;
+				//没建议对
+				suggestWrong = correctPosition - suggestCorrect;
 				
-				
-				System.out.println("共有错误："+errNumber+" 查出错误："+resluts.size()+" 查出位置："+correctPosition+" 查对错误："+suggestCorrect+" 没建议对："+suggestWrong);
 			}
+			System.out.println("共有错误："+errNumber+" 查出错误："+resluts.size()+" 查出位置："+correctPosition+" 查对错误："+suggestCorrect+" 没建议对："+suggestWrong);
 			
 			
 			long eTime = System.currentTimeMillis();
@@ -82,13 +78,51 @@ public class CheckCharacter {
 
 
 		}
+	//}
+	/**
+	 * 判断错误字是否是在标记当中
+	 * @param sign
+	 * @param reslut
+	 * @return 1 正确识别位置并正确建议     0正确识别但没有给出正确讲义   -1 没有正确识别
+	 */
+	private static int isCharacterSame(Sign sign, SuggestResult reslut) {
+		//能找对位置,sign段标识从0开始，result从1开始
+		if( (sign.getParagraph()+1) == reslut.getLineNo() &&  (sign.getIndex() >= reslut.getBegin_index() && sign.getIndex() <= reslut.getEnd_index()) ){
+			System.out.println(reslut.getWrongWord()+"->"+reslut.toString());
+			System.out.println(sign.toString());
+			//能找出对的词
+			if( reslut.getWrongWord().contains(sign.getWrong_word()) && isContainsChar(reslut, sign)){
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		return -1;
+	}
+	
+	public static boolean isContainsChar(SuggestResult reslut,Sign sign){
+		
+		for (String key : reslut.getSuggest()) {
+			if(key.contains(sign.getCorrect_word())){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	private static ArrayList<SuggestResult> getResults(String result) {
-		String[] split = result.split("\r\n");
+		String[] split = result.split("\n");
 		ArrayList<SuggestResult> results = new ArrayList<SuggestResult>();
 		for (String string : split) {
-			results.add(new SuggestResult(string));
+			try {
+				results.add(new SuggestResult(string));
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				System.out.println("跳过一个敏感词");
+				continue;
+			}
 		}
 		return results;
 	}
