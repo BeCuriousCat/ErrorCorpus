@@ -3,57 +3,68 @@ package errors;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class NumbersError extends Error{
-	
-	private static char[] numberList = {'0','1','2','3','4','5','6','7','8','9',
-			                            'Áã','Ò»','¶ş','Èı','ËÄ','Îå','Áù','Æß','°Ë','¾Å',
-			                            '©–','¢Ù','¢Ú','¢Û','¢Ü','¢İ','¢Ş','¢ß','¢à','¢á',
-			                            'Ò¼','·¡','Èş','ËÁ','Îé','Â½','Æâ','°Æ','¾Á'};
-	
+public class NumbersError extends Error {
+
+	private static char[] numberList = { '0', '1', '2', '3', '4', '5', '6',
+			'7', '8', '9', 'é›¶', 'ä¸€', 'äºŒ', 'ä¸‰', 'å››', 'äº”', 'å…­', 'ä¸ƒ', 'å…«', 'ä¹',
+			'ã€‡', 'â‘ ', 'â‘¡', 'â‘¢', 'â‘£', 'â‘¤', 'â‘¥', 'â‘¦', 'â‘§', 'â‘¨', 'å£¹', 'è´°', 'å',
+			'è‚†', 'ä¼', 'é™†', 'æŸ’', 'æŒ', 'ç–' };
+
 	public NumbersError(String name, double rate) {
 		super(name, rate);
 		ArrayList<Sign> sign = new ArrayList<Sign>();
 		setSigns(sign);
 	}
-	
-	
-	
-	
+
 	@Override
-	public boolean process(ArrayList<StringBuffer> corpus_bf, ArrayList<Error> errors) {
+	public boolean process(ArrayList<StringBuffer> corpus_bf,
+			ArrayList<Error> errors) {
 		int errNum = this.getErrorSize();
-		ArrayList<ArrayList<Result>> result = new NumbersAndPunctuation().getNumbers(corpus_bf, "\\p{N}");
-		
-		
+		ArrayList<ArrayList<Result>> result = new NumbersAndPunctuation()
+				.getNumbers(corpus_bf, "\\p{N}");
+
 		Random random = new Random();
 		int totalNums = 0;
-		for(int i = 0; i<result.size();i++){
-			//System.out.println(result.get(i).size());
+		for (int i = 0; i < result.size(); i++) {
+			// System.out.println(result.get(i).size());
 			totalNums += result.get(i).size();
 		}
-		while(totalNums>0&&errNum>0){
+		while (totalNums > 0 && errNum > 0) {
 			int num = random.nextInt(totalNums);
-			
-			for(int para=0; para<result.size(); para++){
-				if(num >= result.get(para).size()){
-					num -= result.get(para).size(); 
-				}else{
+
+			for (int para = 0; para < result.size(); para++) {
+				if (num >= result.get(para).size()) {
+					num -= result.get(para).size();
+				} else {
 					int n = random.nextInt(numberList.length);
 					Result r = result.get(para).get(num);
-					if(String.valueOf(numberList[n]).equals(r.getValue())&& n<numberList.length-1){
-						corpus_bf.get(para).replace(r.getLocation(), r.getLocation()+1, String.valueOf(numberList[n+1]));
-						//System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(numberList[n+1]));
-						Sign sign = new Sign(para, r.getLocation(), r.getValue(), String.valueOf(numberList[n+1]));
+					if (String.valueOf(numberList[n]).equals(r.getValue())
+							&& n < numberList.length - 1) {
+						corpus_bf.get(para).replace(r.getLocation(),
+								r.getLocation() + 1,
+								String.valueOf(numberList[n + 1]));
+						// System.out.println("ori:"+
+						// r.getValue()+"Rep"+String.valueOf(numberList[n+1]));
+						Sign sign = new Sign(para, r.getLocation(),
+								r.getValue(), String.valueOf(numberList[n + 1]));
 						this.getSigns().add(sign);
-					}else if(n==numberList.length-1){
-						corpus_bf.get(para).replace(r.getLocation(), r.getLocation()+1, String.valueOf(numberList[n-1]));
-						//System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(numberList[n-1]));
-						Sign sign = new Sign(para, r.getLocation(), r.getValue(), String.valueOf(numberList[n-1]));
+					} else if (n == numberList.length - 1) {
+						corpus_bf.get(para).replace(r.getLocation(),
+								r.getLocation() + 1,
+								String.valueOf(numberList[n - 1]));
+						// System.out.println("ori:"+
+						// r.getValue()+"Rep"+String.valueOf(numberList[n-1]));
+						Sign sign = new Sign(para, r.getLocation(),
+								r.getValue(), String.valueOf(numberList[n - 1]));
 						this.getSigns().add(sign);
-					}else{
-						corpus_bf.get(para).replace(r.getLocation(), r.getLocation()+1, String.valueOf(numberList[n]));
-						//System.out.println("ori:"+ r.getValue()+"Rep"+String.valueOf(numberList[n]));
-						Sign sign = new Sign(para, r.getLocation(), r.getValue(), String.valueOf(numberList[n]));
+					} else {
+						corpus_bf.get(para).replace(r.getLocation(),
+								r.getLocation() + 1,
+								String.valueOf(numberList[n]));
+						// System.out.println("ori:"+
+						// r.getValue()+"Rep"+String.valueOf(numberList[n]));
+						Sign sign = new Sign(para, r.getLocation(),
+								r.getValue(), String.valueOf(numberList[n]));
 						this.getSigns().add(sign);
 					}
 					errNum--;
@@ -62,44 +73,40 @@ public class NumbersError extends Error{
 				}
 			}
 			totalNums = 0;
-			for(int i = 0; i<result.size();i++){
-				//System.out.println(result.get(i).size());
+			for (int i = 0; i < result.size(); i++) {
+				// System.out.println(result.get(i).size());
 				totalNums += result.get(i).size();
 			}
 		}
-			
-		
-		
+
 		/*
-		System.out.println("++++++++++++++++++++");
-		for(ArrayList<Result> res: result){
-			System.out.println(res.size());
-		}
-		System.out.println("remain"+errNum+"words didnot be generated");
-		*/
+		 * System.out.println("++++++++++++++++++++"); for(ArrayList<Result>
+		 * res: result){ System.out.println(res.size()); }
+		 * System.out.println("remain"+errNum+"words didnot be generated");
+		 */
 		return true;
 	}
-	
-	
+
 	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 		ArrayList<StringBuffer> corpus_bf = new ArrayList<StringBuffer>();
-		StringBuffer s1= new StringBuffer("Éñ·³¹·,¸¸°®.ËÑ236·¢¸ö]Í¼·Ö¹«\\Ë¾·¢¸øÏÂ");
-		StringBuffer s2= new StringBuffer("ÊÇ¹ã·¢¡¢ËÄ¹Ã;¸¸·Ö7Ø¬ºÄ");
-		StringBuffer s3= new StringBuffer("ËÍ·¹·­45Òë£¿µÈVB¶¼ÎÒt°¤¸ö-=+ÎÒGV°¢¸£µÏÅ¶ÎÒ0µÄ=»ªÊ¢7¶ÙºÍÊ±¼ä¶ÎºÍË¾·¨  ");
-		StringBuffer s4= new StringBuffer("·¢Ë³·á9ÖÙ£¨²ÃÍ¬Ò»¡¿ÈËÎÚ£©¸É0´ï");
+		StringBuffer s1 = new StringBuffer("ç¥çƒ¦ç‹—,çˆ¶çˆ±.æœ236å‘ä¸ª]å›¾åˆ†å…¬\\å¸å‘ç»™ä¸‹");
+		StringBuffer s2 = new StringBuffer("æ˜¯å¹¿å‘ã€å››å§‘;çˆ¶åˆ†7å™©è€—");
+		StringBuffer s3 = new StringBuffer(
+				"é€é¥­ç¿»45è¯‘ï¼Ÿç­‰VBéƒ½æˆ‘tæŒ¨ä¸ª-=+æˆ‘GVé˜¿ç¦è¿ªå“¦æˆ‘0çš„=åç››7é¡¿å’Œæ—¶é—´æ®µå’Œå¸æ³•  ");
+		StringBuffer s4 = new StringBuffer("å‘é¡ºä¸°9ä»²ï¼ˆè£åŒä¸€ã€‘äººä¹Œï¼‰å¹²0è¾¾");
 		corpus_bf.add(s1);
 		corpus_bf.add(s2);
 		corpus_bf.add(s3);
 		corpus_bf.add(s4);
-		
-		for(StringBuffer sb: corpus_bf){
+
+		for (StringBuffer sb : corpus_bf) {
 			System.out.println(sb);
 		}
-		new NumbersError("test",1).process(corpus_bf, null);
-		for(StringBuffer sb: corpus_bf){
+		new NumbersError("test", 1).process(corpus_bf, null);
+		for (StringBuffer sb : corpus_bf) {
 			System.out.println(sb);
 		}
 	}
-
 
 }

@@ -1,6 +1,8 @@
 package util;
 
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SuggestResult {
 	private String content;
@@ -56,8 +58,20 @@ public class SuggestResult {
 		String[] res = this.content.split(" "); 
 		//解析错误的词
 		this.wrongWord = res[0];
-		System.out.println(wrongWord);
-		
+		System.out.println(content);
+		//抛出时间检查
+		Pattern pattern = Pattern.compile("[0-9]+[年月日]");
+		Matcher matcher = pattern.matcher(wrongWord);
+		if(matcher.find()){
+			throw new Exception("抛出时间检查！");
+		}
+		//抛出量词检查
+		Pattern patternNum = Pattern.compile("[0-9一二三四五六七八九十]+[个]");
+		Matcher matcherNum = patternNum.matcher(wrongWord);
+		if(matcherNum.find()){
+			throw new Exception("抛出量词检查！");
+		}
+				
 		this.suggest = new HashSet<String>();
 		//解析给出的建议
 		for (int i = 2; i < res.length; i++) {

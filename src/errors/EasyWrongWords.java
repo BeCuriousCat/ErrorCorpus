@@ -28,8 +28,10 @@ public class EasyWrongWords extends Error{
 		
 		
 		HashMap<String,ArrayList> map = new EasyWrongTableProcessing().easyWrongTableProcessing();
-		//int errorNum = this.getError_size();
+	
 		int errorNum = this.getErrorSize();
+		//int errorNum = 2;
+		//System.out.println("errorNum: "+errorNum);
 	    ArrayList< ArrayList<Result>> result = new ArrayList< ArrayList<Result>>();
 	    
 	    int paraNum = corpus_bf.size();
@@ -87,7 +89,7 @@ public class EasyWrongWords extends Error{
 						}
 						
 						corpus_bf.get(para).replace(r.getLocation(), (r.getLocation()+r.getValue().length()), rep);
-						//System.out.println("ori:"+ r.getValue()+"Rep"+rep);
+						System.out.println("ori:"+ r.getValue()+"Rep"+rep);
 						Sign sign = new Sign(para, r.getLocation(), r.getValue(), rep);
 						this.getSigns().add(sign);
 						errorNum--;

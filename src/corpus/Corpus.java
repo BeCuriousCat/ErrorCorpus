@@ -4,15 +4,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import com.alibaba.fastjson.JSON;
 
@@ -20,7 +22,8 @@ import errors.Error;
 
 public class Corpus {
 
-	private String relativelyPath = System.getProperty("user.dir");
+	//private String relativelyPath = System.getProperty("user.dir");
+	private String relativelyPath = "G:\\study\\研一\\文本测试报告\\Data\\text";
 	private String path = "";
 	private ArrayList<StringBuffer> text = null;
 	private int corpus_size = 0;
@@ -252,6 +255,78 @@ public class Corpus {
 
 	}
 
+	/**
+	 * 把数据写入到Word文件
+	 * 
+	 * @throws IOException
+	 */
+	public void write4Word(String filename, boolean withHeader) throws IOException {
+		String path = relativelyPath + "\\";
+		String filepath = path + filename + ".docx";
+		String confpath = path + filename + "_conf.txt";
+		File file = new File(filepath);
+		File conf_file = new File(confpath);
+		BufferedWriter conf_bw = null;
+		OutputStream os = null;
+
+		System.out.println(filepath);
+
+		try {
+			file.createNewFile();
+			System.out.println("success create file,the file is " + filepath);
+			
+			os = new FileOutputStream(new File(filepath));
+			XWPFDocument document = new XWPFDocument();
+			
+			for (StringBuffer sb : text) {
+				XWPFParagraph p = document.createParagraph();	
+				XWPFRun run = p.createRun();
+				run.setText(sb.toString());
+			}
+			document.write(os);
+
+			conf_file.createNewFile();
+			System.out.println("success create file,the file is " + confpath);
+			conf_bw = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (conf_file),"UTF-8"));
+			
+			String content = "";
+			String enter = "\n";
+			String header = "";
+			// 语料库大小
+			header += "corpus_size:" + this.corpus_size;
+			header += enter;
+			// 获得错误类型及数量
+			header += getErrorsNumber();
+			// 生成时间
+			String temp_str = "";
+			Date dt = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss aa");
+			temp_str = sdf.format(dt);
+			header += "Risen time:" + temp_str;
+			header += enter;
+
+			String json = JSON.toJSONString(errors);
+
+			if(withHeader){
+				content = header + json;
+			}else{
+				content = json;
+			}
+			
+			// 输出
+			conf_bw.write(content, 0, content.length());
+			conf_bw.flush();
+
+		} catch (Exception e) {
+			System.out.println("Error: write file error!");
+			e.printStackTrace();
+		} finally {
+			os.close();
+			conf_bw.close();
+		}
+
+	}
 	public void run() {
 		for (Error error : errors) {
 //			System.out.println("test s" + error);
