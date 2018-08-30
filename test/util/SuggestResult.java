@@ -10,6 +10,7 @@ public class SuggestResult {
 	private String wrongWord;
 	private int begin_index;
 	private int end_index;
+	private String env;
 	
 	private HashSet<String> suggest;
 	
@@ -18,6 +19,12 @@ public class SuggestResult {
 	}
 	public String getContent() {
 		return content;
+	}
+	public String getEnv() {
+		return env;
+	}
+	public void setEnv(String env) {
+		this.env = env;
 	}
 	public void setContent(String content) throws Exception {
 		this.content = content;
@@ -46,19 +53,23 @@ public class SuggestResult {
 		return suggest;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "SuggestResult [content=" + content + ", lineNo=" + lineNo
 				+ ", wrongWord=" + wrongWord + ", begin_index=" + begin_index
-				+ ", end_index=" + end_index + ", suggest=" + suggest + "]";
+				+ ", end_index=" + end_index + ", env=" + env + ", suggest="
+				+ suggest + "]";
 	}
 	private void praseContent() throws Exception {
 		// TODO Auto-generated method stub
-		// 哲人 P_160_0_0_0_0_2 责任 哲人 责人 
-		String[] res = this.content.split(" "); 
+		String env[] = this.content.split("#&#&#&#");
+		setEnv(env[1]);
+		// 备感 P_62_0_0_0_10_12 倍感 备感 焙干 #&#&#&#我们备感自豪 
+		String[] res = env[0].split(" "); 
 		//解析错误的词
 		this.wrongWord = res[0];
-		System.out.println(content);
+		//System.out.println(content);
 		//抛出时间检查
 		Pattern pattern = Pattern.compile("[0-9]+[年月日]");
 		Matcher matcher = pattern.matcher(wrongWord);

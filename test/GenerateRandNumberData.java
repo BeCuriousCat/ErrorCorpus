@@ -10,7 +10,7 @@ public class GenerateRandNumberData {
 		Generex date = new Generex("([0-9]+[ÄêÔÂÈÕ]){1,3}");
 
 		// Generate random String
-		String randomStr = date.random();
+		String randomStr = date.getFirstMatch();
 		System.out.println(randomStr);// a random value from the previous String list
 
 

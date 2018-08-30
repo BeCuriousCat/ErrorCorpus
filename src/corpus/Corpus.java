@@ -23,7 +23,7 @@ import errors.Error;
 public class Corpus {
 
 	//private String relativelyPath = System.getProperty("user.dir");
-	private String relativelyPath = "G:\\study\\研一\\文本测试报告\\Data\\text";
+	private String relativelyPath = "G:\\study\\研一\\文本测试报告\\output";
 	private String path = "";
 	private ArrayList<StringBuffer> text = null;
 	private int corpus_size = 0;
@@ -282,8 +282,10 @@ public class Corpus {
 				XWPFParagraph p = document.createParagraph();	
 				XWPFRun run = p.createRun();
 				run.setText(sb.toString());
+				run.setFontSize(14);
 			}
 			document.write(os);
+			os.close();
 
 			conf_file.createNewFile();
 			System.out.println("success create file,the file is " + confpath);
@@ -322,7 +324,7 @@ public class Corpus {
 			System.out.println("Error: write file error!");
 			e.printStackTrace();
 		} finally {
-			os.close();
+			//os.close();
 			conf_bw.close();
 		}
 
